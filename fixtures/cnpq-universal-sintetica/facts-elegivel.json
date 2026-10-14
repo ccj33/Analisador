@@ -1,0 +1,11 @@
+{
+  "assertions": [
+    {"id": "FA-1", "entity_id": "org-1", "key": "organization.country", "value": "BR", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-2", "entity_id": "org-1", "key": "organization.type", "value": "ICT", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-3", "entity_id": "org-1", "key": "organization.legal_nature", "value": "PUBLIC", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-4", "entity_id": "org-1", "key": "organization.di_active_48h", "value": true, "source_type": "EXTERNAL_API", "source_system": "di.cnpq.br", "as_of": "2026-10-13"},
+    {"id": "FA-5", "entity_id": "coord-1", "key": "coordinator.has_phd", "value": true, "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-6", "entity_id": "sub-1", "key": "submission.sent_at", "value": "2026-12-07T20:00:00-03:00", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-7", "entity_id": "proj-1", "key": "project.partners", "value": [], "source_type": "USER_DECLARATION", "as_of": "2026-10-13"}
+  ]
+}

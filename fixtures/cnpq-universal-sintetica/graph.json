@@ -1,0 +1,155 @@
+{
+  "rules": [
+    {
+      "id": "REQ-GEO",
+      "title": "Instituição sediada no Brasil",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "EQ",
+        "left": { "fact": "organization.country" },
+        "right": { "literal": "BR" }
+      },
+      "evidence": [
+        {
+          "id": "EV-GEO",
+          "element_id": "chamada.elm_0011",
+          "quote": "instituições científicas, tecnológicas e de inovação sediadas no Brasil"
+        }
+      ]
+    },
+    {
+      "id": "REQ-INST",
+      "title": "ICT pública ou privada associada a ICT pública",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ALL",
+            "args": [
+              { "op": "EQ", "left": { "fact": "organization.type" }, "right": { "literal": "ICT" } },
+              { "op": "EQ", "left": { "fact": "organization.legal_nature" }, "right": { "literal": "PUBLIC" } }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              { "op": "EQ", "left": { "fact": "organization.legal_nature" }, "right": { "literal": "PRIVATE" } },
+              {
+                "op": "EXISTS",
+                "collection": { "fact": "project.partners" },
+                "where": {
+                  "op": "ALL",
+                  "args": [
+                    { "op": "EQ", "left": { "field": "type" }, "right": { "literal": "ICT" } },
+                    { "op": "EQ", "left": { "field": "legal_nature" }, "right": { "literal": "PUBLIC" } }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-ICT",
+          "element_id": "chamada.elm_0011",
+          "quote": "instituições científicas, tecnológicas e de inovação sediadas no Brasil"
+        },
+        {
+          "id": "EV-PRIV",
+          "element_id": "chamada.elm_0013",
+          "quote": "Instituições privadas também poderão participar quando associadas a uma ICT pública"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-OR",
+          "element_id": "chamada.elm_0013",
+          "quote": "também poderão participar quando"
+        }
+      ]
+    },
+    {
+      "id": "REQ-COORD",
+      "title": "Coordenador com doutorado",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": { "fact": "coordinator.has_phd" },
+        "right": { "literal": true }
+      },
+      "evidence": [
+        {
+          "id": "EV-PHD",
+          "element_id": "chamada.elm_0015",
+          "quote": "O coordenador deverá possuir título de doutor"
+        }
+      ]
+    },
+    {
+      "id": "REQ-DI",
+      "title": "Diretório de Instituições ativo há 48 horas",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "EQ",
+        "left": { "fact": "organization.di_active_48h" },
+        "right": { "literal": true }
+      },
+      "evidence": [
+        {
+          "id": "EV-DI",
+          "element_id": "faq.elm_0007",
+          "quote": "status Ativa há pelo menos 48 horas antes do envio da proposta"
+        }
+      ]
+    },
+    {
+      "id": "REQ-DEADLINE",
+      "title": "Envio até o prazo da retificação",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "LTE",
+        "left": { "fact": "submission.sent_at" },
+        "right": { "literal": "2026-12-07T23:59:00-03:00" }
+      },
+      "evidence": [
+        {
+          "id": "EV-DL",
+          "element_id": "retificacao-1.elm_0007",
+          "quote": "até 07/12/2026, às 23h59, horário de Brasília"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-SUP",
+          "element_id": "retificacao-1.elm_0003",
+          "quote": "Permanecem inalteradas as demais disposições"
+        }
+      ]
+    },
+    {
+      "id": "REQ-MERIT",
+      "title": "Nota mínima de mérito por critério",
+      "layer": "MERIT",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "GTE",
+        "left": { "fact": "project.merit_min_pct" },
+        "right": { "literal": 70 }
+      },
+      "evidence": [
+        {
+          "id": "EV-MERIT",
+          "element_id": "chamada.elm_0025",
+          "quote": "nota mínima de 70% em cada critério"
+        }
+      ]
+    }
+  ]
+}

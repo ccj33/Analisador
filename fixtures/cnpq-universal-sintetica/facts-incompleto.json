@@ -1,0 +1,7 @@
+{
+  "assertions": [
+    {"id": "FA-1", "entity_id": "org-2", "key": "organization.country", "value": "BR", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-2", "entity_id": "org-2", "key": "organization.legal_nature", "value": "PRIVATE", "source_type": "USER_DECLARATION", "as_of": "2026-10-13"},
+    {"id": "FA-3", "entity_id": "coord-2", "key": "coordinator.has_phd", "value": true, "source_type": "USER_DECLARATION", "as_of": "2026-10-13"}
+  ]
+}

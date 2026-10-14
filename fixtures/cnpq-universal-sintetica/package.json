@@ -1,0 +1,31 @@
+{
+  "id": "cnpq-universal-sintetica",
+  "title": "Chamada sintética Universal — fixture de desenvolvimento",
+  "family": "FOMENTO_CHAMADA",
+  "documents": [
+    {
+      "id": "chamada",
+      "path": "chamada.md",
+      "authority": "EDITAL_CORPO",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "faq",
+      "path": "faq.md",
+      "authority": "FAQ_OPERACIONAL",
+      "event": "FAQ"
+    },
+    {
+      "id": "retificacao-1",
+      "path": "retificacao-1.md",
+      "authority": "EDITAL_CORPO",
+      "event": "RETIFICACAO"
+    },
+    {
+      "id": "referencia",
+      "path": "referencia.md",
+      "authority": "COMUNICADO",
+      "event": "ESCLARECIMENTO"
+    }
+  ]
+}

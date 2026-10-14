@@ -1,0 +1,22 @@
+{
+  "id": "cnpq-universal-sintetica",
+  "package": "fixtures/cnpq-universal-sintetica",
+  "notes": "Fixture sintética. Chamadas reais entram na Fase 0 por URL + hash, não por cópia integral.",
+  "profiles": [
+    {
+      "name": "ict-publica-no-prazo",
+      "facts": "fixtures/cnpq-universal-sintetica/facts-elegivel.json",
+      "expected_overall": "SATISFIED"
+    },
+    {
+      "name": "privada-sem-parceiro-nem-di",
+      "facts": "fixtures/cnpq-universal-sintetica/facts-incompleto.json",
+      "expected_overall": "UNKNOWN"
+    },
+    {
+      "name": "ict-publica-depois-do-prazo",
+      "facts": "fixtures/cnpq-universal-sintetica/facts-inelegivel.json",
+      "expected_overall": "UNSATISFIED"
+    }
+  ]
+}
