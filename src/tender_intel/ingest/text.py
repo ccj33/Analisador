@@ -6,6 +6,9 @@ from pathlib import Path
 
 from tender_intel.domain.documents import DocumentElement, SourceDocument, TenderPackage, read_sha256
 from tender_intel.domain.types import AuthorityTier, EventType
+from tender_intel.ingest.clauses import drop_repeated, paged_lines, segment
+from tender_intel.ingest.docx import EXTRACTOR as DOCX_EXTRACTOR
+from tender_intel.ingest.docx import read_docx
 from tender_intel.ingest.pdf import EXTRACTOR as PDF_EXTRACTOR
 from tender_intel.ingest.pdf import read_pdf
 
@@ -22,6 +25,16 @@ def ingest_package(package_dir: Path) -> TenderPackage:
         if path.suffix.lower() == ".pdf":
             text, elements, needs_ocr = read_pdf(document_id, path)
             extractor = PDF_EXTRACTOR
+        elif path.suffix.lower() == ".docx":
+            text, elements = read_docx(document_id, path)
+            needs_ocr = ()
+            extractor = DOCX_EXTRACTOR
+        elif path.suffix.lower() == ".txt":
+            # Texto já extraído de PDF: linhas quebradas no meio da cláusula.
+            text = path.read_text(encoding="utf-8")
+            elements = segment(document_id, drop_repeated(paged_lines(text)), "text-pdf")
+            needs_ocr = ()
+            extractor = "text-pdf"
         else:
             text = path.read_text(encoding="utf-8")
             elements = _elements(document_id, text)

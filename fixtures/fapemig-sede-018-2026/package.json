@@ -1,0 +1,68 @@
+{
+  "id": "fapemig-sede-018-2026",
+  "title": "Chamada FAPEMIG-SEDE 018/2026 — HubMG Gov",
+  "family": "FOMENTO_CHAMADA",
+  "source": "Processo SEI 2070.01.0004193/2026-74, publicado em 09/10/2026. edital.txt é a camada de texto do PDF oficial; anexos I–IX em DOCX como publicados.",
+  "documents": [
+    {
+      "id": "edital",
+      "path": "edital.txt",
+      "authority": "EDITAL_CORPO",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-i",
+      "path": "anexo-i.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-ii",
+      "path": "anexo-ii.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-iii",
+      "path": "anexo-iii.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-iv",
+      "path": "anexo-iv.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-v",
+      "path": "anexo-v.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-vi",
+      "path": "anexo-vi.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-vii",
+      "path": "anexo-vii.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-viii",
+      "path": "anexo-viii.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    },
+    {
+      "id": "anexo-ix",
+      "path": "anexo-ix.docx",
+      "authority": "ANEXO_EDITAL",
+      "event": "PUBLICACAO"
+    }
+  ]
+}

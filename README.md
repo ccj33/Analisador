@@ -22,7 +22,7 @@ A Review Table sai em `.out/review-table.html`.
 ## O que já existe
 
 - Solver Kleene (`SATISFIED`, `UNSATISFIED`, `UNKNOWN`, `CONFLICT`)
-- Ingestão de Markdown com IDs permanentes por linha
+- Ingestão de Markdown, DOCX (sem dependência externa) e texto extraído de PDF. Linhas quebradas pelo PDF voltam a ser uma cláusula (item numerado, alínea, título), rodapé do SEI sai e cada cláusula guarda a página
 - Conferência de evidência por substring
 - Parsers de CNPJ, data, hora e R$
 - `DecisionProvider` com Jev desligável
@@ -30,8 +30,10 @@ A Review Table sai em `.out/review-table.html`.
 - Camada `MERIT` visível e fora do SAT
 - PDF com camada de texto (`pypdf`); página vazia fica marcada para OCR, sem OCR automático
 - Compilação do grafo a partir do texto: elegibilidade, doutorado, Diretório, prazo vigente e mérito. Frase sem padrão não vira regra. Manual citado e ausente fica `UNRESOLVED`
+- Cobertura por cláusula: toda cláusula lida sai como `RULE`, `DISCOVERY` (prazo, referência ou efeito) ou `UNCLASSIFIED`. As não classificadas aparecem na Review Table e no `compile.json`, em vez de sumir
+- Eval do compilador regra a regra contra a anotação (omissão, invenção, lógica diferente, valor fora da citação)
 - Revisão humana por `--review`, e a célula editada prevalece
 
 ## Ainda não
 
-OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas, Review Table interativa.
+OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas (há 3), Review Table interativa.

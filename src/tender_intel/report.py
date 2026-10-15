@@ -38,6 +38,15 @@ def write_review_table(result: CompareResult, path: Path) -> None:
         f"<li>{escape(str(item['document_id']))}: páginas {escape(', '.join(str(page) for page in item['pages']))}</li>"
         for item in result.needs_ocr
     )
+    unclassified = [item for item in result.clauses if item["status"] == "UNCLASSIFIED"]
+    clause_rows = "".join(
+        "<tr>"
+        f"<td>{escape(item['element_id'])}</td>"
+        f"<td>{escape(item['section'])}</td>"
+        f"<td>{escape(item['text'])}</td>"
+        "</tr>"
+        for item in unclassified
+    )
     html = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -64,6 +73,7 @@ def write_review_table(result: CompareResult, path: Path) -> None:
   <p>Resultado global da camada PRE_SUBMISSION: <strong>{escape(result.overall)}</strong></p>
   <p>Origem das regras: {escape("compiladas do texto" if result.rule_source == "compiled" else "grafo anotado")}</p>
   <p>Arquivos {result.coverage["documents"]} · elementos {result.coverage["elements"]} · regras {result.coverage["rules"]} · evidências ancoradas {result.coverage["rules_with_grounded_evidence"]}/{result.coverage["rules"]}</p>
+  <p>Cláusulas lidas {result.coverage["clauses"]} · viraram regra {result.coverage["clauses_in_rules"]} · só prazo/referência/efeito {result.coverage["clauses_in_discovery"]} · sem classificação {result.coverage["clauses_unclassified"]}</p>
   <h2>Prazos</h2>
   <ul>{deadline_rows or "<li>Nenhum prazo com data encontrado.</li>"}</ul>
   <h2>Referências externas</h2>
@@ -78,6 +88,14 @@ def write_review_table(result: CompareResult, path: Path) -> None:
     </thead>
     <tbody>
       {''.join(rows)}
+    </tbody>
+  </table>
+  <h2>Cláusulas sem classificação ({len(unclassified)})</h2>
+  <p class="muted">Lidas, mas nenhuma regra ou detector usou. Precisam de revisão humana: podem conter requisito que o compilador ainda não reconhece.</p>
+  <table>
+    <thead><tr><th>Elemento</th><th>Seção</th><th>Texto</th></tr></thead>
+    <tbody>
+      {clause_rows or "<tr><td colspan='3'>Nenhuma. Toda cláusula lida teve destino.</td></tr>"}
     </tbody>
   </table>
 </body>
