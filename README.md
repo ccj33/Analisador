@@ -33,6 +33,8 @@ A Review Table sai em `.out/review-table.html`.
 - Cobertura por cláusula: toda cláusula lida sai como `RULE`, `DISCOVERY` (prazo, referência ou efeito) ou `UNCLASSIFIED`. As não classificadas aparecem na Review Table e no `compile.json`, em vez de sumir
 - Eval do compilador regra a regra contra a anotação (omissão, invenção, lógica diferente, valor fora da citação)
 - Revisão humana por `--review`, e a célula editada prevalece
+- Cada regra em português simples (`tender_intel.explain`), gerado da própria expressão, sem resumo escrito à mão
+- Página de conferência do gabarito: `python gold/export_review.py conferencia-gabarito.html` monta a página com as regras dos editais reais e o trecho de cada uma
 
 ## Ainda não
 
