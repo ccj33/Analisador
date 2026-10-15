@@ -1,0 +1,14 @@
+{
+  "id": "cnpq-arc-34-2026",
+  "title": "Chamada CNPq Nº 34/2026 — ARC (Auxílio à Promoção de Eventos)",
+  "family": "FOMENTO_CHAMADA",
+  "source": "PDF oficial publicado em 14/10/2026 na página do CNPq.",
+  "documents": [
+    {
+      "id": "chamada",
+      "path": "chamada.pdf",
+      "authority": "EDITAL_CORPO",
+      "event": "PUBLICACAO"
+    }
+  ]
+}

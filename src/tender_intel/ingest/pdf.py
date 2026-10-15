@@ -5,7 +5,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 from tender_intel.domain.documents import DocumentElement
-from tender_intel.ingest.clauses import Line, lines_of, segment
+from tender_intel.ingest.clauses import Line, drop_repeated, lines_of, segment
 
 EXTRACTOR = "pypdf"
 
@@ -30,7 +30,7 @@ def read_pdf(document_id: str, path: Path) -> tuple[str, tuple[DocumentElement, 
             lines.extend(lines_of(body, page_number, cursor + len(marker) + 1))
         cursor += len(block)
     # Cláusula quebrada entre linhas ou páginas volta a ser uma só.
-    return "\n".join(chunks), segment(document_id, lines, EXTRACTOR), tuple(needs_ocr)
+    return "\n".join(chunks), segment(document_id, drop_repeated(lines), EXTRACTOR), tuple(needs_ocr)
 
 
 def write_text_pdf(path: Path, pages: list[list[str]]) -> None:

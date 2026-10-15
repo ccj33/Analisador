@@ -1,0 +1,108 @@
+{
+ "assertions": [
+  {
+   "id": "FA-1",
+   "entity_id": "coordinator",
+   "key": "coordinator.lattes_updated",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-2",
+   "entity_id": "coordinator",
+   "key": "coordinator.has_phd",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-3",
+   "entity_id": "coordinator",
+   "key": "coordinator.bond_type",
+   "value": "ESTATUTARIO",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-4",
+   "entity_id": "coordinator",
+   "key": "coordinator.declares_no_default",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-5",
+   "entity_id": "institution",
+   "key": "institution.di_registered",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-6",
+   "entity_id": "institution",
+   "key": "institution.type",
+   "value": "ICT",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-7",
+   "entity_id": "project",
+   "key": "project.all_institutions_di_registered",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-8",
+   "entity_id": "project",
+   "key": "project.requested_brl",
+   "value": 1200000,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-9",
+   "entity_id": "project",
+   "key": "project.only_operating_costs",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-10",
+   "entity_id": "project",
+   "key": "project.has_french_team",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-11",
+   "entity_id": "proposal",
+   "key": "proposal.has_attachment",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-12",
+   "entity_id": "proposal",
+   "key": "proposal.attachment_mb",
+   "value": 0.9,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-13",
+   "entity_id": "submission",
+   "key": "submission.sent_at",
+   "value": "2027-03-30T20:00:00-03:00",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  }
+ ]
+}

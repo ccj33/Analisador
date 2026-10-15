@@ -1,0 +1,577 @@
+{
+  "rules": [
+    {
+      "id": "ARC-LATTES",
+      "title": "Currículo Lattes atualizado até a submissão",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.lattes_updated"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-LAT",
+          "element_id": "chamada.elm_0040",
+          "quote": "ter seu currículo cadastrado na Plataforma Lattes, atualizado até a data limite para submissão da proposta"
+        }
+      ]
+    },
+    {
+      "id": "ARC-PHD",
+      "title": "Proponente com doutorado",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.has_phd"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-PHD",
+          "element_id": "chamada.elm_0041",
+          "quote": "possuir o título de Doutor"
+        }
+      ]
+    },
+    {
+      "id": "ARC-COMISSAO",
+      "title": "Proponente na comissão organizadora",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.in_organizing_committee"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-COM",
+          "element_id": "chamada.elm_0043",
+          "quote": "participar da comissão organizadora do evento"
+        }
+      ]
+    },
+    {
+      "id": "ARC-VINCULO",
+      "title": "Vínculo formal com a instituição de execução",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.bond_with_institution"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-VIN",
+          "element_id": "chamada.elm_0044",
+          "quote": "ter vínculo formal com a instituição de execução do projeto"
+        }
+      ]
+    },
+    {
+      "id": "ARC-ADIMPLENTE",
+      "title": "Declara não ter inadimplência com CNPq e APF",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.declares_no_default"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-ADI",
+          "element_id": "chamada.elm_0048",
+          "quote": "o proponente deverá declarar para os devidos fins de direito que não possui qualquer inadimplência com o CNPq e com a Administração Pública Federal"
+        }
+      ]
+    },
+    {
+      "id": "ARC-INEDITO",
+      "title": "Evento ainda não apoiado pelo CNPq em outra ação",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "event.already_funded_by_cnpq"
+        },
+        "right": {
+          "literal": false
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-INED",
+          "element_id": "chamada.elm_0050",
+          "quote": "o evento objeto da proposta ainda não foi contemplado com auxílio financeiro do CNPq em outra ação de fomento"
+        }
+      ]
+    },
+    {
+      "id": "ARC-INST",
+      "title": "Instituição de execução no Diretório e ICT, empresa pública ou OSC",
+      "layer": "PRE_SUBMISSION",
+      "actor": "INSTITUTION",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "institution.di_registered"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "ANY",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "ICT"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "EMPRESA_PUBLICA"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "OSC"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-INST",
+          "element_id": "chamada.elm_0052",
+          "quote": "A instituição de execução do projeto deverá estar cadastrada no Diretório de Instituições do CNPq, devendo ser uma Instituição Científica, Tecnológica e de Inovação (ICT), empresa pública ou organização da sociedade civil sem fins lucrativos"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-INST-E",
+          "element_id": "chamada.elm_0052",
+          "quote": "devendo ser"
+        }
+      ]
+    },
+    {
+      "id": "ARC-PROMOTOR",
+      "title": "Promotor é sociedade científica ou unidade de ICT",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "event.promoter_type"
+            },
+            "right": {
+              "literal": "SOCIEDADE_CIENTIFICA"
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "event.promoter_type"
+            },
+            "right": {
+              "literal": "UNIDADE_ICT"
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-PROM",
+          "element_id": "chamada.elm_0057",
+          "quote": "Os eventos deverão ser promovidos por sociedades ou associações científicas e/ou tecnológicas ou unidades acadêmicas ou tecnológicas integrantes da estrutura de Instituições Científicas, Tecnológicas e de Inovação (ICTs)"
+        }
+      ]
+    },
+    {
+      "id": "ARC-PORTE",
+      "title": "Evento de grande porte e abrangência nacional ou maior",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "event.size"
+            },
+            "right": {
+              "literal": "GRANDE"
+            }
+          },
+          {
+            "op": "ANY",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "event.scope"
+                },
+                "right": {
+                  "literal": "MUNDIAL"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "event.scope"
+                },
+                "right": {
+                  "literal": "INTERNACIONAL"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "event.scope"
+                },
+                "right": {
+                  "literal": "NACIONAL"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-PORTE",
+          "element_id": "chamada.elm_0024",
+          "quote": "eventos de médio e pequeno porte"
+        },
+        {
+          "id": "EV-ABR",
+          "element_id": "chamada.elm_0025",
+          "quote": "eventos de abrangência local ou regional"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-NAO",
+          "element_id": "chamada.elm_0023",
+          "quote": "Não serão elegíveis a esta Chamada"
+        }
+      ]
+    },
+    {
+      "id": "ARC-VALOR",
+      "title": "Valor dentro do teto da Linha",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.line"
+                },
+                "right": {
+                  "literal": 1
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "project.requested_brl"
+                },
+                "right": {
+                  "literal": 200000
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.line"
+                },
+                "right": {
+                  "literal": 2
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "project.requested_brl"
+                },
+                "right": {
+                  "literal": 200000
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.line"
+                },
+                "right": {
+                  "literal": 3
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "project.requested_brl"
+                },
+                "right": {
+                  "literal": 150000
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-VAL",
+          "element_id": "chamada.elm_0067",
+          "quote": "Linha 1 – Eventos Mundiais Até R$ 200.000,00 Linha 2 – Eventos Tradicionais Até R$ 200.000,00 Linha 3 – Eventos Não Tradicionais Até R$ 150.000,00"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-VAL-FX",
+          "element_id": "chamada.elm_0067",
+          "quote": "de acordo com uma das seguintes faixas"
+        }
+      ]
+    },
+    {
+      "id": "ARC-PERIODO",
+      "title": "Evento realizado no período da Linha",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.line"
+                },
+                "right": {
+                  "literal": 1
+                }
+              },
+              {
+                "op": "GTE",
+                "left": {
+                  "fact": "event.start_at"
+                },
+                "right": {
+                  "literal": "2027-07-01T00:00:00-03:00"
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "event.end_at"
+                },
+                "right": {
+                  "literal": "2028-07-31T23:59:00-03:00"
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "ANY",
+                "args": [
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "project.line"
+                    },
+                    "right": {
+                      "literal": 2
+                    }
+                  },
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "project.line"
+                    },
+                    "right": {
+                      "literal": 3
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "GTE",
+                "left": {
+                  "fact": "event.start_at"
+                },
+                "right": {
+                  "literal": "2027-07-01T00:00:00-03:00"
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "event.end_at"
+                },
+                "right": {
+                  "literal": "2028-06-30T23:59:00-03:00"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-PER1",
+          "element_id": "chamada.elm_0031",
+          "quote": "realizados no período de 01/07/2027 a 31/07/2028"
+        },
+        {
+          "id": "EV-PER2",
+          "element_id": "chamada.elm_0032",
+          "quote": "realizados no período de 01/07/2027 a 30/06/2028"
+        },
+        {
+          "id": "EV-PER3",
+          "element_id": "chamada.elm_0033",
+          "quote": "realizados no período de 01/07/2027 a 30/06/2028"
+        }
+      ]
+    },
+    {
+      "id": "ARC-ARQUIVO",
+      "title": "Arquivo anexo enviado, PDF de até 1 Mb",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "proposal.has_attachment"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "proposal.attachment_mb"
+            },
+            "right": {
+              "literal": 1
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-ARQ",
+          "element_id": "chamada.elm_0140",
+          "quote": "O envio do arquivo é obrigatório e a ausência implicará no indeferimento da proposta"
+        },
+        {
+          "id": "EV-ARQ-MB",
+          "element_id": "chamada.elm_0141",
+          "quote": "limitando-se a 1Mb (um megabyte)"
+        }
+      ]
+    },
+    {
+      "id": "ARC-DEADLINE",
+      "title": "Envio até 23h59 de 04/12/2026",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "LTE",
+        "left": {
+          "fact": "submission.sent_at"
+        },
+        "right": {
+          "literal": "2026-12-04T23:59:00-03:00"
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-DL",
+          "element_id": "chamada.elm_0035",
+          "quote": "Data limite para submissão das propostas 04/12/2026"
+        },
+        {
+          "id": "EV-DL-H",
+          "element_id": "chamada.elm_0099",
+          "quote": "será até às 23h59 (vinte e três horas e cinquenta e nove minutos), horário de Brasília"
+        }
+      ]
+    }
+  ]
+}

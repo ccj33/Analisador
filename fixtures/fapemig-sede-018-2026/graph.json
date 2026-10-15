@@ -49,14 +49,14 @@
       "evidence": [
         {
           "id": "EV-TIPO",
-          "element_id": "edital.elm_0105",
+          "element_id": "edital.elm_0100",
           "quote": "Poderão figurar como Proponente empresas, startups, cooperativas ou ICTs-MG"
         }
       ],
       "relation_evidence": [
         {
           "id": "EV-TIPO-OU",
-          "element_id": "edital.elm_0105",
+          "element_id": "edital.elm_0100",
           "quote": "empresas, startups, cooperativas ou ICTs-MG"
         }
       ]
@@ -78,7 +78,7 @@
       "evidence": [
         {
           "id": "EV-MEI",
-          "element_id": "edital.elm_0109",
+          "element_id": "edital.elm_0104",
           "quote": "a Proponente não poderá ser enquadrada como Microempreendedor Individual (MEI)"
         }
       ]
@@ -100,7 +100,7 @@
       "evidence": [
         {
           "id": "EV-EXEC",
-          "element_id": "edital.elm_0108",
+          "element_id": "edital.elm_0103",
           "quote": "a execução do projeto deverá ocorrer no Estado de Minas Gerais"
         }
       ]
@@ -122,7 +122,7 @@
       "evidence": [
         {
           "id": "EV-CAD",
-          "element_id": "edital.elm_0111",
+          "element_id": "edital.elm_0106",
           "quote": "Todas as Proponentes deverão ter pré-cadastro ou cadastro regular na FAPEMIG"
         }
       ]
@@ -172,19 +172,19 @@
       "evidence": [
         {
           "id": "EV-LIM1",
-          "element_id": "edital.elm_0116",
+          "element_id": "edital.elm_0111",
           "quote": "Cada Proponente poderá submeter 1 (uma) Proposta"
         },
         {
           "id": "EV-LIM3",
-          "element_id": "edital.elm_0117",
+          "element_id": "edital.elm_0112",
           "quote": "faturamento bruto anual igual ou superior a R$ 16.000.000,00 (dezesseis milhões de reais) poderá submeter até 3 (três) propostas"
         }
       ],
       "relation_evidence": [
         {
           "id": "EV-LIM-EXC",
-          "element_id": "edital.elm_0116",
+          "element_id": "edital.elm_0111",
           "quote": "ressalvado o disposto no item 3.1.5.1"
         }
       ]
@@ -206,7 +206,7 @@
       "evidence": [
         {
           "id": "EV-DES",
-          "element_id": "edital.elm_0128",
+          "element_id": "edital.elm_0123",
           "quote": "Cada proposta deverá atender a um único Desafio"
         }
       ]
@@ -228,7 +228,7 @@
       "evidence": [
         {
           "id": "EV-MAN",
-          "element_id": "edital.elm_0132",
+          "element_id": "edital.elm_0127",
           "quote": "estar acompanhadas da Manifestação de Interesse na Proposta Prévia emitida pelo Órgão Demandante"
         }
       ]
@@ -264,7 +264,7 @@
       "evidence": [
         {
           "id": "EV-DUR",
-          "element_id": "edital.elm_0138",
+          "element_id": "edital.elm_0133",
           "quote": "apresentar prazo de execução de, no mínimo, 18 (dezoito) e, no máximo, 30 (trinta) meses"
         }
       ]
@@ -286,12 +286,12 @@
       "evidence": [
         {
           "id": "EV-CP-EMP",
-          "element_id": "edital.elm_0202",
+          "element_id": "edital.elm_0194",
           "quote": "contrapartida financeira mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
         },
         {
           "id": "EV-CP-ICT",
-          "element_id": "edital.elm_0203",
+          "element_id": "edital.elm_0195",
           "quote": "contrapartida econômica mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
         }
       ]
@@ -355,14 +355,14 @@
       "evidence": [
         {
           "id": "EV-VAL",
-          "element_id": "edital.elm_0197",
+          "element_id": "edital.elm_0189",
           "quote": "A Projeto de pesquisa científica ou desenvolvimento de metodologias R$ 1.000.000,00 (um milhão de reais) B Projeto de desenvolvimento tecnológico R$ 2.000.000,00 (dois milhões de reais)"
         }
       ],
       "relation_evidence": [
         {
           "id": "EV-VAL-CAT",
-          "element_id": "edital.elm_0195",
+          "element_id": "edital.elm_0189",
           "quote": "Esta Chamada contempla 2 (duas) categorias de apoio, conforme a natureza do projeto"
         }
       ]
@@ -384,7 +384,7 @@
       "evidence": [
         {
           "id": "EV-CVIN",
-          "element_id": "edital.elm_0145",
+          "element_id": "edital.elm_0140",
           "quote": "Possuir vínculo com a Proponente que celebrará instrumento jurídico com a FAPEMIG"
         }
       ]
@@ -406,7 +406,7 @@
       "evidence": [
         {
           "id": "EV-CEV",
-          "element_id": "edital.elm_0149",
+          "element_id": "edital.elm_0144",
           "quote": "Estar cadastrado no sistema EVEREST da FAPEMIG."
         }
       ]
@@ -428,7 +428,7 @@
       "evidence": [
         {
           "id": "EV-CUMA",
-          "element_id": "edital.elm_0150",
+          "element_id": "edital.elm_0145",
           "quote": "Submeter e ser responsável por apenas 1 (uma) Proposta, na condição de Coordenador"
         }
       ]
@@ -482,29 +482,29 @@
       "evidence": [
         {
           "id": "EV-SUB-A",
-          "element_id": "edital.elm_0160",
+          "element_id": "edital.elm_0155",
           "quote": "ser servidor público ou empregado público, de carreira ou concursado"
         },
         {
           "id": "EV-SUB-B",
-          "element_id": "edital.elm_0161",
+          "element_id": "edital.elm_0156",
           "quote": "atuar no Órgão Demandante em área vinculada à temática do Desafio"
         },
         {
           "id": "EV-SUB-C",
-          "element_id": "edital.elm_0162",
+          "element_id": "edital.elm_0157",
           "quote": "apresentar declaração formal do Órgão Demandante autorizando sua participação no projeto"
         },
         {
           "id": "EV-SUB-D",
-          "element_id": "edital.elm_0163",
+          "element_id": "edital.elm_0158",
           "quote": "ser formalmente indicado como Subcoordenador da Proposta no sistema EVEREST da FAPEMIG"
         }
       ],
       "relation_evidence": [
         {
           "id": "EV-SUB-E",
-          "element_id": "edital.elm_0159",
+          "element_id": "edital.elm_0154",
           "quote": "deverá atender, cumulativamente, aos seguintes requisitos"
         }
       ]
@@ -526,7 +526,7 @@
       "evidence": [
         {
           "id": "EV-DL",
-          "element_id": "edital.elm_0416",
+          "element_id": "edital.elm_0404",
           "quote": "até as 17h do dia 09 de dezembro de 2026, ficando o sistema disponível para a conclusão e o envio definitivo até as 23h59 do mesmo dia"
         }
       ]

@@ -36,4 +36,4 @@ A Review Table sai em `.out/review-table.html`.
 
 ## Ainda não
 
-OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas (há 1), Review Table interativa.
+OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas (há 3), Review Table interativa.
