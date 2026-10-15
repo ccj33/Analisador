@@ -18,6 +18,8 @@ Protocolo de anotação da Fase 0. Sem gold set, Jev e frontier são chute.
 
 ## Estado atual
 
+`tender-intel eval` mede cada caso duas vezes: com o grafo anotado (só o solver) e com o grafo compilado do texto. O compilador é comparado à anotação regra a regra, pareando pelos fatos consultados: `MATCH`, `DIFFERENT_LOGIC` (mesmos fatos, operador ou valor diferente), `OMITTED` e `INVENTED`, agrupados por camada/ator, com sobreposição de evidência e números/datas que não aparecem na citação.
+
 Há um caso sintético versionado em `fixtures/cnpq-universal-sintetica/` e anotado em `gold/cases/cnpq-universal-sintetica.json`.
 
 Próximo passo da Fase 0: anotar 8–12 chamadas reais CNPq/FAPEMIG com o mesmo schema. Não colar editais com direitos restritos neste repositório sem autorização; ligar por URL + hash.

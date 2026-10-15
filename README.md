@@ -31,6 +31,7 @@ A Review Table sai em `.out/review-table.html`.
 - PDF com camada de texto (`pypdf`); página vazia fica marcada para OCR, sem OCR automático
 - Compilação do grafo a partir do texto: elegibilidade, doutorado, Diretório, prazo vigente e mérito. Frase sem padrão não vira regra. Manual citado e ausente fica `UNRESOLVED`
 - Cobertura por cláusula: toda cláusula lida sai como `RULE`, `DISCOVERY` (prazo, referência ou efeito) ou `UNCLASSIFIED`. As não classificadas aparecem na Review Table e no `compile.json`, em vez de sumir
+- Eval do compilador regra a regra contra a anotação (omissão, invenção, lógica diferente, valor fora da citação)
 - Revisão humana por `--review`, e a célula editada prevalece
 
 ## Ainda não
