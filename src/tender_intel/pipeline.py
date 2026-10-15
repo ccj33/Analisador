@@ -178,6 +178,9 @@ def _triage(package: TenderPackage, provider: DecisionProvider) -> None:
 
 
 def _overall(statuses: list[str]) -> str:
+    # Nenhuma regra extraída não é "nada a cumprir": é não saber.
+    if not statuses:
+        return Status.UNKNOWN.value
     if any(status == Status.UNSATISFIED.value for status in statuses):
         return Status.UNSATISFIED.value
     if any(status == Status.CONFLICT.value for status in statuses):

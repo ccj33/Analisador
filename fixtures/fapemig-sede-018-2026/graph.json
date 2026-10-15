@@ -1,0 +1,535 @@
+{
+  "rules": [
+    {
+      "id": "FAP-TIPO",
+      "title": "Proponente é empresa, startup, cooperativa ou ICT-MG",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "organization.type"
+            },
+            "right": {
+              "literal": "EMPRESA"
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "organization.type"
+            },
+            "right": {
+              "literal": "STARTUP"
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "organization.type"
+            },
+            "right": {
+              "literal": "COOPERATIVA"
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "organization.type"
+            },
+            "right": {
+              "literal": "ICT_MG"
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-TIPO",
+          "element_id": "edital.elm_0105",
+          "quote": "Poderão figurar como Proponente empresas, startups, cooperativas ou ICTs-MG"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-TIPO-OU",
+          "element_id": "edital.elm_0105",
+          "quote": "empresas, startups, cooperativas ou ICTs-MG"
+        }
+      ]
+    },
+    {
+      "id": "FAP-MEI",
+      "title": "Proponente não é MEI",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "organization.is_mei"
+        },
+        "right": {
+          "literal": false
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-MEI",
+          "element_id": "edital.elm_0109",
+          "quote": "a Proponente não poderá ser enquadrada como Microempreendedor Individual (MEI)"
+        }
+      ]
+    },
+    {
+      "id": "FAP-EXEC-MG",
+      "title": "Execução do projeto em Minas Gerais",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "project.execution_state"
+        },
+        "right": {
+          "literal": "MG"
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-EXEC",
+          "element_id": "edital.elm_0108",
+          "quote": "a execução do projeto deverá ocorrer no Estado de Minas Gerais"
+        }
+      ]
+    },
+    {
+      "id": "FAP-CADASTRO",
+      "title": "Pré-cadastro ou cadastro regular na FAPEMIG",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "organization.fapemig_registered"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-CAD",
+          "element_id": "edital.elm_0111",
+          "quote": "Todas as Proponentes deverão ter pré-cadastro ou cadastro regular na FAPEMIG"
+        }
+      ]
+    },
+    {
+      "id": "FAP-LIMITE",
+      "title": "Uma proposta, ou até três com faturamento ≥ R$ 16 milhões",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "organization.proposals_submitted"
+            },
+            "right": {
+              "literal": 1
+            }
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "GTE",
+                "left": {
+                  "fact": "organization.annual_gross_revenue_mg"
+                },
+                "right": {
+                  "literal": 16000000
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "organization.proposals_submitted"
+                },
+                "right": {
+                  "literal": 3
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-LIM1",
+          "element_id": "edital.elm_0116",
+          "quote": "Cada Proponente poderá submeter 1 (uma) Proposta"
+        },
+        {
+          "id": "EV-LIM3",
+          "element_id": "edital.elm_0117",
+          "quote": "faturamento bruto anual igual ou superior a R$ 16.000.000,00 (dezesseis milhões de reais) poderá submeter até 3 (três) propostas"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-LIM-EXC",
+          "element_id": "edital.elm_0116",
+          "quote": "ressalvado o disposto no item 3.1.5.1"
+        }
+      ]
+    },
+    {
+      "id": "FAP-DESAFIO",
+      "title": "Proposta vinculada a um único Desafio",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "project.challenges_count"
+        },
+        "right": {
+          "literal": 1
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-DES",
+          "element_id": "edital.elm_0128",
+          "quote": "Cada proposta deverá atender a um único Desafio"
+        }
+      ]
+    },
+    {
+      "id": "FAP-MANIFESTACAO",
+      "title": "Manifestação de Interesse na Proposta Prévia",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "project.has_prior_interest_statement"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-MAN",
+          "element_id": "edital.elm_0132",
+          "quote": "estar acompanhadas da Manifestação de Interesse na Proposta Prévia emitida pelo Órgão Demandante"
+        }
+      ]
+    },
+    {
+      "id": "FAP-DURACAO",
+      "title": "Prazo de execução entre 18 e 30 meses",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "GTE",
+            "left": {
+              "fact": "project.duration_months"
+            },
+            "right": {
+              "literal": 18
+            }
+          },
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "project.duration_months"
+            },
+            "right": {
+              "literal": 30
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-DUR",
+          "element_id": "edital.elm_0138",
+          "quote": "apresentar prazo de execução de, no mínimo, 18 (dezoito) e, no máximo, 30 (trinta) meses"
+        }
+      ]
+    },
+    {
+      "id": "FAP-CONTRAPARTIDA",
+      "title": "Contrapartida mínima de 10% do valor solicitado",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "GTE",
+        "left": {
+          "fact": "project.counterpart_pct"
+        },
+        "right": {
+          "literal": 10
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-CP-EMP",
+          "element_id": "edital.elm_0202",
+          "quote": "contrapartida financeira mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
+        },
+        {
+          "id": "EV-CP-ICT",
+          "element_id": "edital.elm_0203",
+          "quote": "contrapartida econômica mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
+        }
+      ]
+    },
+    {
+      "id": "FAP-VALOR",
+      "title": "Valor solicitado dentro do teto da categoria",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.category"
+                },
+                "right": {
+                  "literal": "A"
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "project.requested_brl"
+                },
+                "right": {
+                  "literal": 1000000
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.category"
+                },
+                "right": {
+                  "literal": "B"
+                }
+              },
+              {
+                "op": "LTE",
+                "left": {
+                  "fact": "project.requested_brl"
+                },
+                "right": {
+                  "literal": 2000000
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-VAL",
+          "element_id": "edital.elm_0197",
+          "quote": "A Projeto de pesquisa científica ou desenvolvimento de metodologias R$ 1.000.000,00 (um milhão de reais) B Projeto de desenvolvimento tecnológico R$ 2.000.000,00 (dois milhões de reais)"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-VAL-CAT",
+          "element_id": "edital.elm_0195",
+          "quote": "Esta Chamada contempla 2 (duas) categorias de apoio, conforme a natureza do projeto"
+        }
+      ]
+    },
+    {
+      "id": "FAP-COORD-VINCULO",
+      "title": "Coordenador com vínculo com a Proponente",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.bond_with_proponent"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-CVIN",
+          "element_id": "edital.elm_0145",
+          "quote": "Possuir vínculo com a Proponente que celebrará instrumento jurídico com a FAPEMIG"
+        }
+      ]
+    },
+    {
+      "id": "FAP-COORD-EVEREST",
+      "title": "Coordenador cadastrado no EVEREST",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.everest_registered"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-CEV",
+          "element_id": "edital.elm_0149",
+          "quote": "Estar cadastrado no sistema EVEREST da FAPEMIG."
+        }
+      ]
+    },
+    {
+      "id": "FAP-COORD-UMA",
+      "title": "Coordenador de no máximo uma proposta",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "LTE",
+        "left": {
+          "fact": "coordinator.proposals_as_coordinator"
+        },
+        "right": {
+          "literal": 1
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-CUMA",
+          "element_id": "edital.elm_0150",
+          "quote": "Submeter e ser responsável por apenas 1 (uma) Proposta, na condição de Coordenador"
+        }
+      ]
+    },
+    {
+      "id": "FAP-SUBCOORD",
+      "title": "Subcoordenador atende 3.5.1 a–d",
+      "layer": "PRE_SUBMISSION",
+      "actor": "SUBCOORDINATOR",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.is_career_public_servant"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.works_in_challenge_area"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.has_authorization"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.indicated_in_everest"
+            },
+            "right": {
+              "literal": true
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-SUB-A",
+          "element_id": "edital.elm_0160",
+          "quote": "ser servidor público ou empregado público, de carreira ou concursado"
+        },
+        {
+          "id": "EV-SUB-B",
+          "element_id": "edital.elm_0161",
+          "quote": "atuar no Órgão Demandante em área vinculada à temática do Desafio"
+        },
+        {
+          "id": "EV-SUB-C",
+          "element_id": "edital.elm_0162",
+          "quote": "apresentar declaração formal do Órgão Demandante autorizando sua participação no projeto"
+        },
+        {
+          "id": "EV-SUB-D",
+          "element_id": "edital.elm_0163",
+          "quote": "ser formalmente indicado como Subcoordenador da Proposta no sistema EVEREST da FAPEMIG"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-SUB-E",
+          "element_id": "edital.elm_0159",
+          "quote": "deverá atender, cumulativamente, aos seguintes requisitos"
+        }
+      ]
+    },
+    {
+      "id": "FAP-DEADLINE",
+      "title": "Envio até 23h59 de 09/12/2026",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "LTE",
+        "left": {
+          "fact": "submission.sent_at"
+        },
+        "right": {
+          "literal": "2026-12-09T23:59:00-03:00"
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-DL",
+          "element_id": "edital.elm_0416",
+          "quote": "até as 17h do dia 09 de dezembro de 2026, ficando o sistema disponível para a conclusão e o envio definitivo até as 23h59 do mesmo dia"
+        }
+      ]
+    }
+  ]
+}

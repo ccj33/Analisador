@@ -22,7 +22,7 @@ A Review Table sai em `.out/review-table.html`.
 ## O que já existe
 
 - Solver Kleene (`SATISFIED`, `UNSATISFIED`, `UNKNOWN`, `CONFLICT`)
-- Ingestão de Markdown com IDs permanentes por linha
+- Ingestão de Markdown, DOCX (sem dependência externa) e texto extraído de PDF. Linhas quebradas pelo PDF voltam a ser uma cláusula (item numerado, alínea, título), rodapé do SEI sai e cada cláusula guarda a página
 - Conferência de evidência por substring
 - Parsers de CNPJ, data, hora e R$
 - `DecisionProvider` com Jev desligável
@@ -36,4 +36,4 @@ A Review Table sai em `.out/review-table.html`.
 
 ## Ainda não
 
-OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas, Review Table interativa.
+OCR e tabelas (Docling), chamada HTTP do Jev, cláusulas fora dos padrões determinísticos, Lattes/DI ao vivo, 8–12 chamadas reais anotadas (há 1), Review Table interativa.

@@ -9,6 +9,15 @@ from tender_intel.domain.ast import node_to_dict
 from tender_intel.domain.rules import NormativeRule
 
 ISO_DATE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})")
+NUMBER_WORDS = {
+    1: ("um ", "uma ", "único", "única"),
+    2: ("dois", "duas"),
+    3: ("três",),
+}
+MONTHS = (
+    "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+    "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+)
 
 
 def compare_rules(annotated: list[NormativeRule], compiled: list[NormativeRule]) -> dict[str, Any]:
@@ -49,14 +58,30 @@ def values_missing_from_evidence(rule: NormativeRule) -> list[str]:
         if isinstance(value, bool):
             continue
         if isinstance(value, (int, float)):
-            if str(value) not in quotes:
+            if not any(form in quotes for form in _number_forms(value)):
                 missing.append(str(value))
         elif isinstance(value, str) and ISO_DATE.match(value):
             year, month, day = (int(part) for part in ISO_DATE.match(value).groups())
-            forms = {date(year, month, day).strftime("%d/%m/%Y"), f"{day}/{month}/{year}", value[:10]}
+            forms = {
+                date(year, month, day).strftime("%d/%m/%Y"),
+                f"{day}/{month}/{year}",
+                value[:10],
+                f"{day:02d} de {MONTHS[month - 1]} de {year}",
+                f"{day} de {MONTHS[month - 1]} de {year}",
+            }
             if not any(form in quotes for form in forms):
                 missing.append(value)
     return missing
+
+
+def _number_forms(value: int | float) -> set[str]:
+    """16000000 aparece no edital como 16.000.000,00."""
+    forms = {str(value)}
+    forms |= set(NUMBER_WORDS.get(value, ()))
+    if float(value).is_integer():
+        grouped = f"{int(value):,}".replace(",", ".")
+        forms |= {grouped, f"{grouped},00"}
+    return forms
 
 
 def _row(gold: NormativeRule | None, got: NormativeRule | None, outcome: str) -> dict[str, Any]:
