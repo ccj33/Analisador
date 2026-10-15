@@ -1,7 +1,9 @@
 import json
+from dataclasses import replace
 from pathlib import Path
 
 from tender_intel.ai.provider import AbstainProvider
+from tender_intel.compile.coverage import clause_coverage, coverage_counts
 from tender_intel.compile.discover import discover
 from tender_intel.compile.extract import compile_rules
 from tender_intel.domain.documents import DocumentElement, SourceDocument, TenderPackage
@@ -9,7 +11,7 @@ from tender_intel.domain.rules import rules_from_dict, rules_to_dict
 from tender_intel.domain.types import AuthorityTier, EventType
 from tender_intel.ingest.pdf import write_text_pdf
 from tender_intel.ingest.text import ingest_package
-from tender_intel.pipeline import compare_paths
+from tender_intel.pipeline import compare, compare_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "fixtures" / "cnpq-universal-sintetica"
@@ -119,3 +121,26 @@ def test_human_review_overrides_deadline(tmp_path: Path):
     assert deadline.status == "SATISFIED"
     assert deadline.human_override == "SATISFIED"
     assert result.overall == "SATISFIED"
+
+
+def test_every_clause_has_a_destination():
+    package = ingest_package(PACKAGE)
+    rules = compile_rules(package)
+    clauses = clause_coverage(package, rules, discover(package))
+    counts = coverage_counts(clauses)
+    by_id = {item.element_id: item for item in clauses}
+    assert counts["clauses"] == counts["clauses_in_rules"] + counts["clauses_in_discovery"] + counts["clauses_unclassified"]
+    assert by_id["chamada.elm_0011"].used_by == ("REQ-GEO", "REQ-INST")
+    assert by_id["chamada.elm_0021"].status == "DISCOVERY"
+    assert by_id["chamada.elm_0007"].status == "UNCLASSIFIED"
+
+
+def test_unknown_clause_is_reported_not_dropped():
+    package = ingest_package(PACKAGE)
+    first = package.documents[0]
+    extra = DocumentElement(f"{first.id}.elm_9999", first.id, "item", "2.9 O proponente deverá ter sede em Minas Gerais.", ("2.9",), 0, 0)
+    package.documents[0] = replace(first, elements=(*first.elements, extra))
+    result = compare(package, compile_rules(package), {"assertions": []}, AbstainProvider(), "compiled")
+    unclassified = [item for item in result.clauses if item["status"] == "UNCLASSIFIED"]
+    assert extra.id in {item["element_id"] for item in unclassified}
+    assert result.coverage["clauses_unclassified"] == len(unclassified)

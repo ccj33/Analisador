@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from tender_intel.ai.provider import JevProvider
+from tender_intel.compile.coverage import UNCLASSIFIED, clause_coverage, clauses_to_dict
 from tender_intel.compile.discover import discover
 from tender_intel.compile.extract import compile_rules
 from tender_intel.domain.rules import rules_to_dict
@@ -65,6 +66,8 @@ def _compile(args: argparse.Namespace) -> int:
     graph_path = args.out / "compile-graph.json"
     payload = draft.to_dict()
     payload["rules"] = rules_to_dict(rules)["rules"]
+    clauses = clause_coverage(package, rules, draft)
+    payload["clauses"] = clauses_to_dict(clauses)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     graph_path.write_text(json.dumps(rules_to_dict(rules), ensure_ascii=False, indent=2), encoding="utf-8")
     effective = [item.iso_date for item in draft.deadlines if item.effective]
@@ -72,6 +75,8 @@ def _compile(args: argparse.Namespace) -> int:
     print(f"Regras compiladas: {len(rules)}")
     print(f"Prazo vigente: {effective[0] if effective else 'nenhum'}")
     print(f"Referências não resolvidas: {len(unresolved)}")
+    unclassified = sum(1 for item in clauses if item.status == UNCLASSIFIED)
+    print(f"Cláusulas sem classificação: {unclassified} de {len(clauses)}")
     print(f"JSON: {path}")
     print(f"Grafo: {graph_path}")
     return 0
