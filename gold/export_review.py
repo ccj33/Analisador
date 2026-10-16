@@ -8,6 +8,7 @@ a partir de `gold/review_page.html`; qualquer outra extensão grava só os dados
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -57,14 +58,14 @@ def main(out: Path) -> None:
             "notes": notes,
             **extra,
             "rules": [
-                {
+                _with_rev({
                     "id": rule.id,
                     "title": rule.title,
                     "actor": ACTORS.get(rule.actor, rule.actor),
                     "explain": explain(rule.expression),
                     "evidence": [_excerpt(package, span) for span in rule.evidence],
                     "links": [_link(package, span) for span in rule.relation_evidence],
-                }
+                })
                 for rule in rules
             ],
         })
@@ -76,6 +77,22 @@ def main(out: Path) -> None:
     else:
         out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"{out}: {sum(len(case['rules']) for case in cases)} regras em {len(cases)} chamadas")
+
+
+def rule_rev(rule: dict) -> str:
+    """Muda quando muda o que a pessoa conferiu (título, frase, trechos): a marcação antiga deixa de valer."""
+    seen = {
+        "title": rule["title"],
+        "explain": rule["explain"],
+        "evidence": [item["quote"] for item in rule["evidence"]],
+        "links": [item["quote"] for item in rule["links"]],
+    }
+    return hashlib.sha256(json.dumps(seen, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()[:12]
+
+
+def _with_rev(rule: dict) -> dict:
+    rule["rev"] = rule_rev(rule)
+    return rule
 
 
 def _excerpt(package, span) -> dict:

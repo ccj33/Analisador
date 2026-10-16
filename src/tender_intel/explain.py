@@ -23,7 +23,12 @@ ACTORS = {
 BOOL_FACTS = {
     "organization.is_mei": ("a proponente é MEI (microempreendedor individual)", "a proponente não é MEI (microempreendedor individual)"),
     "organization.fapemig_registered": ("a proponente tem pré-cadastro ou cadastro regular na FAPEMIG", "a proponente não tem cadastro na FAPEMIG"),
+    "organization.proposals_distinct_challenges": ("cada proposta da proponente é para um Desafio diferente", "a proponente tem mais de uma proposta para o mesmo Desafio"),
     "project.has_prior_interest_statement": ("a proposta traz a Manifestação de Interesse emitida pelo Órgão Demandante", "a proposta não traz a Manifestação de Interesse do Órgão Demandante"),
+    "project.has_activities_outside_mg": ("o projeto tem atividades fora de Minas Gerais", "o projeto não tem atividades fora de Minas Gerais"),
+    "project.outside_mg_activities_accessory": ("as atividades fora de Minas Gerais são só acessórias ou complementares, sem ser o núcleo do projeto", "as atividades fora de Minas Gerais incluem o núcleo do projeto"),
+    "project.outside_mg_activities_justified": ("as atividades fora de Minas Gerais estão justificadas no Plano de Trabalho", "as atividades fora de Minas Gerais não estão justificadas no Plano de Trabalho"),
+    "project.plans_technical_missions": ("o projeto prevê missões técnicas entre os grupos do Brasil e da França", "o projeto não prevê missões técnicas"),
     "project.all_institutions_di_registered": ("todas as instituições envolvidas estão cadastradas no Diretório de Instituições do CNPq", "nem todas as instituições envolvidas estão cadastradas no Diretório de Instituições do CNPq"),
     "project.only_operating_costs": ("o pedido é só de despesas de custeio", "o pedido inclui despesas que não são de custeio"),
     "project.has_french_team": ("o projeto tem cooperação com um grupo de pesquisa da França", "o projeto não tem cooperação com grupo de pesquisa da França"),
@@ -38,12 +43,16 @@ BOOL_FACTS = {
     "coordinator.academic_activity": ("o(a) coordenador(a) comprova que mantém atividade acadêmico-científica", "o(a) coordenador(a) não comprova atividade acadêmico-científica"),
     "coordinator.institution_agreement": ("a instituição de execução declara que concorda com a execução do projeto", "a instituição de execução não declara que concorda com a execução do projeto"),
     "subcoordinator.is_career_public_servant": ("o(a) subcoordenador(a) é servidor(a) ou empregado(a) público(a) de carreira", "o(a) subcoordenador(a) não é servidor(a) ou empregado(a) público(a) de carreira"),
+    "subcoordinator.from_challenge_author_body": ("o(a) subcoordenador(a) é de órgão ou entidade do Estado de Minas Gerais autor do Desafio", "o(a) subcoordenador(a) não é do órgão ou entidade autor do Desafio"),
+    "subcoordinator.only_commissioned_post": ("o(a) subcoordenador(a) ocupa só cargo em comissão", "o(a) subcoordenador(a) não ocupa só cargo em comissão"),
+    "subcoordinator.signed_interest_statement": ("o(a) subcoordenador(a) assina a Manifestação de Interesse na Proposta Prévia", "o(a) subcoordenador(a) não assina a Manifestação de Interesse na Proposta Prévia"),
     "subcoordinator.works_in_challenge_area": ("o(a) subcoordenador(a) atua no Órgão Demandante, em área ligada ao Desafio", "o(a) subcoordenador(a) não atua no Órgão Demandante em área ligada ao Desafio"),
     "subcoordinator.has_authorization": ("o(a) subcoordenador(a) tem declaração do Órgão Demandante autorizando sua participação", "o(a) subcoordenador(a) não tem declaração do Órgão Demandante autorizando sua participação"),
     "subcoordinator.indicated_in_everest": ("o(a) subcoordenador(a) está indicado(a) como subcoordenador(a) da proposta no EVEREST", "o(a) subcoordenador(a) não está indicado(a) como subcoordenador(a) no EVEREST"),
     "institution.di_registered": ("a instituição de execução está cadastrada no Diretório de Instituições do CNPq", "a instituição de execução não está cadastrada no Diretório de Instituições do CNPq"),
     "event.already_funded_by_cnpq": ("o evento já recebeu apoio do CNPq em outra ação", "o evento ainda não recebeu apoio do CNPq em outra ação"),
     "proposal.has_attachment": ("a proposta leva o arquivo anexo obrigatório", "a proposta não leva o arquivo anexo"),
+    "proposal.attachment_pdf_ocr": ("o arquivo anexo é um PDF com OCR (texto pesquisável)", "o arquivo anexo não é um PDF com OCR"),
 }
 
 # fato → (sujeito, rótulo de cada valor)
@@ -70,7 +79,9 @@ NUMBER_FACTS = {
     "organization.annual_gross_revenue_mg": ("o faturamento bruto anual da proponente é de", "brl"),
     "project.challenges_count": ("a proposta atende a", ("Desafio", "Desafios")),
     "project.duration_months": ("o prazo de execução é de", ("mês", "meses")),
-    "project.counterpart_pct": ("a contrapartida é de", "pct"),
+    "project.financial_counterpart_pct": ("a contrapartida financeira é de", "pct"),
+    "project.total_counterpart_pct": ("a contrapartida, somando a econômica e a financeira, é de", "pct"),
+    "project.subcoordinators_count": ("a proposta tem", ("subcoordenador(a)", "subcoordenadores(as)")),
     "project.requested_brl": ("o valor pedido é de", "brl"),
     "coordinator.proposals_as_coordinator": ("o(a) coordenador(a) coordena", ("proposta", "propostas")),
     "proposal.attachment_mb": ("o arquivo anexo tem", "mb"),
@@ -78,6 +89,7 @@ NUMBER_FACTS = {
 
 # fato → (sujeito, mostra a hora)
 DATE_FACTS = {
+    "submission.started_at": ("a proposta é iniciada no sistema", True),
     "submission.sent_at": ("a proposta é enviada", True),
     "event.start_at": ("o evento começa", False),
     "event.end_at": ("o evento termina", False),

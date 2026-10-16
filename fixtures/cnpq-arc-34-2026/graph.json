@@ -507,7 +507,7 @@
     },
     {
       "id": "ARC-ARQUIVO",
-      "title": "Arquivo anexo enviado, PDF de até 1 Mb",
+      "title": "Arquivo anexo enviado, em PDF OCR de até 1 Mb",
       "layer": "PRE_SUBMISSION",
       "actor": "PROJECT",
       "expression": {
@@ -517,6 +517,15 @@
             "op": "EQ",
             "left": {
               "fact": "proposal.has_attachment"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "proposal.attachment_pdf_ocr"
             },
             "right": {
               "literal": true
@@ -538,6 +547,11 @@
           "id": "EV-ARQ",
           "element_id": "chamada.elm_0140",
           "quote": "O envio do arquivo é obrigatório e a ausência implicará no indeferimento da proposta"
+        },
+        {
+          "id": "EV-ARQ-OCR",
+          "element_id": "chamada.elm_0141",
+          "quote": "O arquivo deverá ser gerado em formato PDF OCR"
         },
         {
           "id": "EV-ARQ-MB",

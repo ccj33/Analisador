@@ -85,23 +85,82 @@
     },
     {
       "id": "FAP-EXEC-MG",
-      "title": "Execução do projeto em Minas Gerais",
+      "title": "Execução em Minas Gerais; fora do estado, só atividades acessórias e justificadas",
       "layer": "PRE_SUBMISSION",
       "actor": "PROJECT",
       "expression": {
-        "op": "EQ",
-        "left": {
-          "fact": "project.execution_state"
-        },
-        "right": {
-          "literal": "MG"
-        }
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "project.execution_state"
+            },
+            "right": {
+              "literal": "MG"
+            }
+          },
+          {
+            "op": "ANY",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "project.has_activities_outside_mg"
+                },
+                "right": {
+                  "literal": false
+                }
+              },
+              {
+                "op": "ALL",
+                "args": [
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "project.outside_mg_activities_accessory"
+                    },
+                    "right": {
+                      "literal": true
+                    }
+                  },
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "project.outside_mg_activities_justified"
+                    },
+                    "right": {
+                      "literal": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "evidence": [
         {
           "id": "EV-EXEC",
           "element_id": "edital.elm_0103",
           "quote": "a execução do projeto deverá ocorrer no Estado de Minas Gerais"
+        },
+        {
+          "id": "EV-EXEC-FORA",
+          "element_id": "edital.elm_0105",
+          "quote": "admite-se a realização, fora do território estadual, de atividades acessórias ou complementares tecnicamente necessárias ao desenvolvimento da Solução"
+        },
+        {
+          "id": "EV-EXEC-COND",
+          "element_id": "edital.elm_0105",
+          "quote": "desde que justificadas no Plano de Trabalho e que não constituam o núcleo do objeto do projeto"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-EXEC-RES",
+          "element_id": "edital.elm_0103",
+          "quote": "ressalvado o disposto na alínea “e” deste item da Chamada"
         }
       ]
     },
@@ -129,7 +188,7 @@
     },
     {
       "id": "FAP-LIMITE",
-      "title": "Uma proposta, ou até três com faturamento ≥ R$ 16 milhões",
+      "title": "Uma proposta, ou até três para Desafios distintos com faturamento ≥ R$ 16 milhões",
       "layer": "PRE_SUBMISSION",
       "actor": "PROPONENT",
       "expression": {
@@ -164,6 +223,15 @@
                 "right": {
                   "literal": 3
                 }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "organization.proposals_distinct_challenges"
+                },
+                "right": {
+                  "literal": true
+                }
               }
             ]
           }
@@ -178,7 +246,12 @@
         {
           "id": "EV-LIM3",
           "element_id": "edital.elm_0112",
-          "quote": "faturamento bruto anual igual ou superior a R$ 16.000.000,00 (dezesseis milhões de reais) poderá submeter até 3 (três) propostas"
+          "quote": "faturamento bruto anual igual ou superior a R$ 16.000.000,00 (dezesseis milhões de reais) poderá submeter até 3 (três) propostas, vinculadas a Desafios distintos"
+        },
+        {
+          "id": "EV-LIM-DES",
+          "element_id": "edital.elm_0112",
+          "quote": "É vedada a apresentação, pela mesma Proponente, de mais de uma Proposta para o mesmo Desafio"
         }
       ],
       "relation_evidence": [
@@ -271,28 +344,98 @@
     },
     {
       "id": "FAP-CONTRAPARTIDA",
-      "title": "Contrapartida mínima de 10% do valor solicitado",
+      "title": "Contrapartida de 10%: financeira para empresas, startups e cooperativas; econômica ou financeira para ICTs-MG",
       "layer": "PRE_SUBMISSION",
       "actor": "PROPONENT",
       "expression": {
-        "op": "GTE",
-        "left": {
-          "fact": "project.counterpart_pct"
-        },
-        "right": {
-          "literal": 10
-        }
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "ANY",
+                "args": [
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "organization.type"
+                    },
+                    "right": {
+                      "literal": "EMPRESA"
+                    }
+                  },
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "organization.type"
+                    },
+                    "right": {
+                      "literal": "STARTUP"
+                    }
+                  },
+                  {
+                    "op": "EQ",
+                    "left": {
+                      "fact": "organization.type"
+                    },
+                    "right": {
+                      "literal": "COOPERATIVA"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "GTE",
+                "left": {
+                  "fact": "project.financial_counterpart_pct"
+                },
+                "right": {
+                  "literal": 10
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "organization.type"
+                },
+                "right": {
+                  "literal": "ICT_MG"
+                }
+              },
+              {
+                "op": "GTE",
+                "left": {
+                  "fact": "project.total_counterpart_pct"
+                },
+                "right": {
+                  "literal": 10
+                }
+              }
+            ]
+          }
+        ]
       },
       "evidence": [
         {
           "id": "EV-CP-EMP",
           "element_id": "edital.elm_0194",
-          "quote": "contrapartida financeira mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
+          "quote": "As Proponentes Empresas, Startups e Cooperativas deverão apresentar contrapartida financeira mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
         },
         {
           "id": "EV-CP-ICT",
           "element_id": "edital.elm_0195",
-          "quote": "contrapartida econômica mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
+          "quote": "As Proponentes ICTs-MG deverão apresentar contrapartida econômica mínima obrigatória equivalente a 10% (dez por cento) do valor total a ser solicitado à FAPEMIG"
+        },
+        {
+          "id": "EV-CP-SUB",
+          "element_id": "edital.elm_0196",
+          "quote": "A contrapartida econômica poderá ser substituída, total ou parcialmente, por contrapartida financeira, desde que o valor global da contrapartida exigida para a proposta seja integralmente atendido"
         }
       ]
     },
@@ -435,7 +578,7 @@
     },
     {
       "id": "FAP-SUBCOORD",
-      "title": "Subcoordenador atende 3.5.1 a–d",
+      "title": "Um único subcoordenador, que atende 3.5.1 a–d",
       "layer": "PRE_SUBMISSION",
       "actor": "SUBCOORDINATOR",
       "expression": {
@@ -448,6 +591,24 @@
             },
             "right": {
               "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.from_challenge_author_body"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.only_commissioned_post"
+            },
+            "right": {
+              "literal": false
             }
           },
           {
@@ -476,6 +637,24 @@
             "right": {
               "literal": true
             }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "subcoordinator.signed_interest_statement"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "project.subcoordinators_count"
+            },
+            "right": {
+              "literal": 1
+            }
           }
         ]
       },
@@ -484,6 +663,16 @@
           "id": "EV-SUB-A",
           "element_id": "edital.elm_0155",
           "quote": "ser servidor público ou empregado público, de carreira ou concursado"
+        },
+        {
+          "id": "EV-SUB-A-ORG",
+          "element_id": "edital.elm_0155",
+          "quote": "de órgão ou entidade da Administração Pública direta ou indireta do Estado de Minas Gerais autora do Desafio"
+        },
+        {
+          "id": "EV-SUB-A-COM",
+          "element_id": "edital.elm_0155",
+          "quote": "vedada a participação de ocupante exclusivamente de cargo em comissão"
         },
         {
           "id": "EV-SUB-B",
@@ -499,6 +688,21 @@
           "id": "EV-SUB-D",
           "element_id": "edital.elm_0158",
           "quote": "ser formalmente indicado como Subcoordenador da Proposta no sistema EVEREST da FAPEMIG"
+        },
+        {
+          "id": "EV-SUB-D-ASS",
+          "element_id": "edital.elm_0158",
+          "quote": "sua assinatura constar na Manifestação de Interesse na Proposta Prévia"
+        },
+        {
+          "id": "EV-SUB-UM",
+          "element_id": "edital.elm_0158",
+          "quote": "Será admitido(a) um(a) único(a) Subcoordenador(a) por proposta"
+        },
+        {
+          "id": "EV-SUB-INAB",
+          "element_id": "edital.elm_0159",
+          "quote": "A ausência da assinatura do Subcoordenador na Manifestação de Interesse na Proposta Prévia ou da sua indicação no sistema EVEREST da FAPEMIG, no momento da submissão da proposta, implicará a inabilitação do projeto"
         }
       ],
       "relation_evidence": [
@@ -511,23 +715,37 @@
     },
     {
       "id": "FAP-DEADLINE",
-      "title": "Envio até 23h59 de 09/12/2026",
+      "title": "Proposta iniciada até 17h e enviada até 23h59 de 09/12/2026",
       "layer": "PRE_SUBMISSION",
       "actor": "PROPONENT",
       "expression": {
-        "op": "LTE",
-        "left": {
-          "fact": "submission.sent_at"
-        },
-        "right": {
-          "literal": "2026-12-09T23:59:00-03:00"
-        }
+        "op": "ALL",
+        "args": [
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "submission.started_at"
+            },
+            "right": {
+              "literal": "2026-12-09T17:00:00-03:00"
+            }
+          },
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "submission.sent_at"
+            },
+            "right": {
+              "literal": "2026-12-09T23:59:00-03:00"
+            }
+          }
+        ]
       },
       "evidence": [
         {
           "id": "EV-DL",
           "element_id": "edital.elm_0404",
-          "quote": "até as 17h do dia 09 de dezembro de 2026, ficando o sistema disponível para a conclusão e o envio definitivo até as 23h59 do mesmo dia"
+          "quote": "As propostas devem ser iniciadas no sistema EVEREST até as 17h do dia 09 de dezembro de 2026, ficando o sistema disponível para a conclusão e o envio definitivo até as 23h59 do mesmo dia"
         }
       ]
     }

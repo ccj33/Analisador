@@ -24,14 +24,21 @@ def test_single_conditions_read_as_sentences():
     assert explain(fapemig["FAP-MEI"].expression) == {"text": "A proponente não é MEI (microempreendedor individual)"}
     assert explain(fapemig["FAP-DURACAO"].expression) == {"text": "O prazo de execução é de 18 a 30 meses"}
     assert explain(fapemig["FAP-TIPO"].expression) == {"text": "A proponente é empresa, startup, cooperativa ou ICT de Minas Gerais"}
-    assert explain(fapemig["FAP-DEADLINE"].expression) == {"text": "A proposta é enviada até 09/12/2026, às 23h59 (horário de Brasília)"}
+    assert explain(fapemig["FAP-DEADLINE"].expression) == {"all": [
+        {"text": "A proposta é iniciada no sistema até 09/12/2026, às 17h00 (horário de Brasília)"},
+        {"text": "A proposta é enviada até 09/12/2026, às 23h59 (horário de Brasília)"},
+    ]}
 
 
 def test_alternatives_keep_their_logic():
     limit = explain(_rules("fapemig-sede-018-2026")["FAP-LIMITE"].expression)
     assert limit == {"any": [
         {"text": "A proponente envia no máximo 1 proposta"},
-        {"text": "O faturamento bruto anual da proponente é de pelo menos R$ 16.000.000,00 e a proponente envia no máximo 3 propostas"},
+        {"all": [
+            {"text": "O faturamento bruto anual da proponente é de pelo menos R$ 16.000.000,00"},
+            {"text": "A proponente envia no máximo 3 propostas"},
+            {"text": "Cada proposta da proponente é para um Desafio diferente"},
+        ]},
     ]}
     bond = explain(_rules("cnpq-anr-32-2026")["ANR-VINCULO"].expression)
     assert bond["any"][0] == {"text": "O vínculo do(a) coordenador(a) com a instituição de execução é celetista (CLT) ou estatutário"}

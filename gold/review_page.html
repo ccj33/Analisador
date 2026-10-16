@@ -48,6 +48,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -242,6 +243,12 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
 .missing h3 { font-size: 1.05rem; }
 .missing p { font-size: 0.95rem; color: var(--muted); max-width: 64ch; }
 
+.changed {
+  display: grid; gap: 4px; padding: 10px 12px; border-radius: var(--radius-sm);
+  background: var(--accent-soft); border: 1px solid var(--accent); font-size: 0.95rem;
+}
+.changed-old { color: var(--muted); overflow-wrap: anywhere; }
+
 .foot { font-size: 0.82rem; color: var(--muted); }
 
 @media (max-width: 480px) {
@@ -281,6 +288,7 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     <p class="lead">As marcações ficam salvas e voltam para o Claude corrigir o gabarito. Não precisa conferir tudo de uma vez.</p>
   </section>
   <div class="notice" id="notice" hidden></div>
+  <div class="notice" id="changed-banner" hidden></div>
   <div class="done-banner" id="done-banner" hidden>Tudo conferido. Avise no chat que terminou.</div>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Editais"></nav>
   <div id="cases"></div>
@@ -292,6 +300,9 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
 (function () {
   "use strict";
   var DATA = JSON.parse(document.getElementById("gabarito").textContent);
+  // versão de cada regra: marcação feita sobre outra versão volta como pendente
+  var REV = {};
+  DATA.cases.forEach(function (c) { c.rules.forEach(function (r) { REV[r.id] = r.rev; }); });
   var VERDICTS = {
     certo: { label: "Está certo", stamp: "Conferido" },
     erro: { label: "Tem erro", stamp: "Com erro" },
@@ -309,7 +320,8 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var state = {
-    reviews: new Map(),   // ruleId -> {verdict, note, by, at}
+    reviews: new Map(),   // ruleId -> {verdict, note, by, at, rev, via}
+    stale: new Map(),     // marcações feitas sobre uma versão anterior da regra
     missing: new Map(),   // caseId -> {note, by, at}
     active: DATA.cases[0].id,
     filter: "todas",
@@ -331,6 +343,16 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     return node;
   }
   function cap(text) { return text ? text.charAt(0).toUpperCase() + text.slice(1) : text; }
+  function findText(node, re) {
+    if (!node) return null;
+    if (node.text != null) return re.test(node.text) ? node.text : null;
+    var kids = node.all || node.any || [];
+    for (var i = 0; i < kids.length; i++) {
+      var hit = findText(kids[i], re);
+      if (hit) return hit;
+    }
+    return null;
+  }
 
   /* ---------- montagem ---------- */
   function explainEl(node, depth) {
@@ -412,6 +434,8 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     stamp.setAttribute("aria-hidden", "true");
     var title = el("h3", "ficha-title", rule.title);
     title.tabIndex = -1;
+    var changed = el("div", "changed");
+    changed.hidden = true;
 
     var body = el("div", "ficha-body");
     var reading = el("section");
@@ -491,9 +515,9 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     sumRow.append(sumWho, reopen);
     summary.append(savedNote, sumRow);
 
-    art.append(top, stamp, title, body, verdict, summary);
+    art.append(top, stamp, title, changed, body, verdict, summary);
     cards.set(rule.id, {
-      root: art, stamp: stamp, title: title, buttons: buttons, note: note, noteLabel: noteLabel, area: area,
+      root: art, stamp: stamp, title: title, changed: changed, buttons: buttons, note: note, noteLabel: noteLabel, area: area,
       noteStatus: noteStatus, saveNote: saveNote, who: who, undo: undo, savedNote: savedNote, sumWho: sumWho
     });
     return art;
@@ -507,11 +531,13 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     head.append(el("p", "eyebrow", c.short + " · " + c.nickname), el("h2", null, c.title));
     var facts = el("div", "facts");
     var deadline = c.rules.filter(function (r) { return /DEADLINE$/.test(r.id); })[0];
-    if (deadline && deadline.explain.text) {
-      var dl = el("span");
-      dl.append(el("strong", null, "Prazo de envio: "), document.createTextNode(deadline.explain.text.replace(/^A proposta é enviada até /, "")));
-      facts.append(dl);
-    }
+    [["Iniciar no sistema até: ", /^A proposta é iniciada no sistema até /], ["Prazo de envio: ", /^A proposta é enviada até /]].forEach(function (pair) {
+      var found = deadline ? findText(deadline.explain, pair[1]) : null;
+      if (!found) return;
+      var span = el("span");
+      span.append(el("strong", null, pair[0]), document.createTextNode(found.replace(pair[1], "")));
+      facts.append(span);
+    });
     var count = el("span");
     count.append(el("strong", null, c.rules.length + " exigências"), document.createTextNode(" no gabarito"));
     facts.append(count);
@@ -596,6 +622,15 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     card.root.classList.toggle("is-collapsed", done && !state.expanded.has(id));
     if (verdict) card.root.setAttribute("data-verdict", verdict); else card.root.removeAttribute("data-verdict");
     card.stamp.textContent = verdict ? VERDICTS[verdict].stamp : "";
+    var old = !review ? state.stale.get(id) : null;
+    card.changed.hidden = !old;
+    card.changed.textContent = "";
+    if (old) {
+      var head = el("p");
+      head.append(el("strong", null, "Corrigida depois da conferência."), document.createTextNode(" Confira se agora ficou certo."));
+      var before = "Na conferência anterior: “" + VERDICTS[old.verdict].label + "”" + (old.note ? ". " + old.note : "");
+      card.changed.append(head, el("p", "changed-old", before));
+    }
     Object.keys(card.buttons).forEach(function (v) {
       card.buttons[v].setAttribute("aria-pressed", String(v === verdict));
       card.buttons[v].disabled = readOnly || !canInteract;
@@ -625,6 +660,7 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
       var d = new Date(review.at);
       if (!isNaN(d)) when = d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
     }
+    if (review.via === "chat") return "Conferido no chat" + (when ? " em " + when : "");
     var name = review.by && review.by === myId ? "você" : (review.by && state.names[review.by]) || (review.by ? "alguém da equipe" : "");
     var text = name ? "Marcado por " + name : "Marcado";
     return when ? text + " em " + when : text;
@@ -656,6 +692,13 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     bar[1].style.width = (100 * all.erro / all.total) + "%";
     bar[2].style.width = (100 * all.duvida / all.total) + "%";
     document.getElementById("done-banner").hidden = all.done < all.total;
+    var changedCount = 0;
+    state.stale.forEach(function (_, id) { if (!state.reviews.has(id)) changedCount += 1; });
+    var banner = document.getElementById("changed-banner");
+    banner.hidden = changedCount === 0;
+    banner.textContent = changedCount === 1
+      ? "1 exigência foi corrigida depois da conferência. Em “Mostrar”, escolha “Pendentes” para ver só ela."
+      : changedCount + " exigências foram corrigidas depois da conferência. Em “Mostrar”, escolha “Pendentes” para ver só elas.";
     document.getElementById("next-pending").hidden = all.done >= all.total;
     DATA.cases.forEach(function (c) {
       var k = counts(c.rules);
@@ -758,7 +801,7 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     var prev = state.reviews.get(rule.id);
     var card = cards.get(rule.id);
     var keepNote = verdict !== "certo" ? (card.area.value.trim() || (prev && prev.note) || "") : "";
-    var body = { rule: rule.id, "case": caseId, verdict: verdict, note: keepNote, by: myId || "", at: new Date().toISOString() };
+    var body = { rule: rule.id, "case": caseId, verdict: verdict, note: keepNote, by: myId || "", at: new Date().toISOString(), rev: REV[rule.id], via: "pagina" };
     state.reviews.set(rule.id, body);
     if (verdict === "certo") state.expanded.delete(rule.id); else state.expanded.add(rule.id);
     updateCard(rule.id);
@@ -781,7 +824,7 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
     var current = state.reviews.get(rule.id);
     if (!current || readOnly) return;
     var card = cards.get(rule.id);
-    var body = Object.assign({}, current, { note: card.area.value.trim(), by: myId || current.by || "", at: new Date().toISOString() });
+    var body = Object.assign({}, current, { note: card.area.value.trim(), by: myId || current.by || "", at: new Date().toISOString(), rev: REV[rule.id], via: "pagina" });
     state.reviews.set(rule.id, body);
     delete card.area.dataset.dirty;
     card.noteStatus.textContent = db ? "Salvando…" : "Anotado nesta tela";
@@ -852,19 +895,23 @@ h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.
 
   /* ---------- loja ---------- */
   function onReviews(snap) {
-    var next = new Map();
+    var next = new Map(), stale = new Map();
     snap.docs.forEach(function (d) {
       if (!d.exists) return;
       var data = d.data() || {};
       if (!VERDICTS[data.verdict] || !ruleCase.has(d.id)) return;
-      next.set(d.id, {
+      var entry = {
         rule: d.id, "case": ruleCase.get(d.id), verdict: data.verdict,
         note: typeof data.note === "string" ? data.note.slice(0, 4000) : "",
         by: typeof data.by === "string" ? data.by : "",
-        at: typeof data.at === "string" ? data.at : ""
-      });
+        at: typeof data.at === "string" ? data.at : "",
+        rev: typeof data.rev === "string" ? data.rev : "",
+        via: typeof data.via === "string" ? data.via : ""
+      };
+      if (entry.rev && entry.rev !== REV[d.id]) stale.set(d.id, entry); else next.set(d.id, entry);
     });
     state.reviews = next;
+    state.stale = stale;
     storeLive = true;
     canInteract = true;
     allRules.forEach(function (r) { updateCard(r.id); });

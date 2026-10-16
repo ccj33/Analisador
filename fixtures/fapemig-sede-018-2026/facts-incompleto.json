@@ -75,7 +75,7 @@
   {
    "id": "FA-10",
    "entity_id": "project",
-   "key": "project.counterpart_pct",
+   "key": "project.financial_counterpart_pct",
    "value": 10,
    "source_type": "USER_DECLARATION",
    "as_of": "2026-12-09"
@@ -125,6 +125,22 @@
    "entity_id": "submission",
    "key": "submission.sent_at",
    "value": "2026-12-09T22:10:00-03:00",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-17",
+   "entity_id": "project",
+   "key": "project.has_activities_outside_mg",
+   "value": false,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-18",
+   "entity_id": "submission",
+   "key": "submission.started_at",
+   "value": "2026-12-09T15:30:00-03:00",
    "source_type": "USER_DECLARATION",
    "as_of": "2026-12-09"
   }

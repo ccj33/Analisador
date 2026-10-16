@@ -103,6 +103,22 @@
    "value": true,
    "source_type": "USER_DECLARATION",
    "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-14",
+   "entity_id": "project",
+   "key": "project.plans_technical_missions",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
+  },
+  {
+   "id": "FA-15",
+   "entity_id": "proposal",
+   "key": "proposal.attachment_pdf_ocr",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2027-03-30"
   }
  ]
 }

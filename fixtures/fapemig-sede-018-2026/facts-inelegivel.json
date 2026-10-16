@@ -75,7 +75,7 @@
   {
    "id": "FA-10",
    "entity_id": "project",
-   "key": "project.counterpart_pct",
+   "key": "project.financial_counterpart_pct",
    "value": 10,
    "source_type": "USER_DECLARATION",
    "as_of": "2026-12-09"
@@ -157,6 +157,54 @@
    "entity_id": "submission",
    "key": "submission.sent_at",
    "value": "2026-12-09T22:10:00-03:00",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-21",
+   "entity_id": "project",
+   "key": "project.has_activities_outside_mg",
+   "value": false,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-22",
+   "entity_id": "submission",
+   "key": "submission.started_at",
+   "value": "2026-12-09T15:30:00-03:00",
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-23",
+   "entity_id": "subcoordinator",
+   "key": "subcoordinator.from_challenge_author_body",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-24",
+   "entity_id": "subcoordinator",
+   "key": "subcoordinator.only_commissioned_post",
+   "value": false,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-25",
+   "entity_id": "subcoordinator",
+   "key": "subcoordinator.signed_interest_statement",
+   "value": true,
+   "source_type": "USER_DECLARATION",
+   "as_of": "2026-12-09"
+  },
+  {
+   "id": "FA-26",
+   "entity_id": "project",
+   "key": "project.subcoordinators_count",
+   "value": 1,
    "source_type": "USER_DECLARATION",
    "as_of": "2026-12-09"
   }
