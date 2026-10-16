@@ -4,7 +4,7 @@ Compila o pacote de uma chamada de fomento num grafo normativo verificável e co
 
 Não é chat com PDF. LLM, quando existir, é trabalhador da pipeline. O solver é determinístico. Jev é opcional e hoje o padrão é `AbstainProvider`.
 
-Specs: [docs/MASTER_SPEC.md](docs/MASTER_SPEC.md), [docs/JEV_POLICY.md](docs/JEV_POLICY.md), [docs/GOLD_SET.md](docs/GOLD_SET.md).
+Specs: [docs/MASTER_SPEC.md](docs/MASTER_SPEC.md), [docs/JEV_POLICY.md](docs/JEV_POLICY.md), [docs/GOLD_SET.md](docs/GOLD_SET.md). Plano de execução, fase por fase: [docs/PLANO.md](docs/PLANO.md).
 
 ## Rodar
 
