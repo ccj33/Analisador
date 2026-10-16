@@ -1,0 +1,22 @@
+{
+  "id": "fapemig-sede-018-2026",
+  "package": "fixtures/fapemig-sede-018-2026",
+  "notes": "Primeira chamada real. Gabarito cobre os requisitos de elegibilidade verificáveis na submissão (itens 3, 5.1, 5.4 e 13.1). Itens de mérito, contratação e prestação de contas ficam de fora.",
+  "profiles": [
+    {
+      "name": "startup-mg-completa",
+      "facts": "fixtures/fapemig-sede-018-2026/facts-elegivel.json",
+      "expected_overall": "SATISFIED"
+    },
+    {
+      "name": "sem-subcoordenador-informado",
+      "facts": "fixtures/fapemig-sede-018-2026/facts-incompleto.json",
+      "expected_overall": "UNKNOWN"
+    },
+    {
+      "name": "mei-com-duas-propostas",
+      "facts": "fixtures/fapemig-sede-018-2026/facts-inelegivel.json",
+      "expected_overall": "UNSATISFIED"
+    }
+  ]
+}

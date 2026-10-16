@@ -1,0 +1,22 @@
+{
+  "id": "cnpq-arc-34-2026",
+  "package": "fixtures/cnpq-arc-34-2026",
+  "notes": "Gabarito cobre o item 3 (elegibilidade), 1.3.4 (porte), 2.1 (período por Linha), 4.3 (teto por Linha), 6.6.2–6.6.3 (arquivo) e o prazo. Ficam de fora: definição das Linhas por histórico (5/10 anos), 6.8/6.9 (vale a última proposta, não indefere) e mérito.",
+  "profiles": [
+    {
+      "name": "evento-nacional-linha2",
+      "facts": "fixtures/cnpq-arc-34-2026/facts-elegivel.json",
+      "expected_overall": "SATISFIED"
+    },
+    {
+      "name": "sem-dados-do-arquivo-anexo",
+      "facts": "fixtures/cnpq-arc-34-2026/facts-incompleto.json",
+      "expected_overall": "UNKNOWN"
+    },
+    {
+      "name": "evento-regional-acima-do-teto-da-linha3",
+      "facts": "fixtures/cnpq-arc-34-2026/facts-inelegivel.json",
+      "expected_overall": "UNSATISFIED"
+    }
+  ]
+}

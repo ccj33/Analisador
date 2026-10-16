@@ -1,0 +1,22 @@
+{
+  "id": "cnpq-anr-32-2026",
+  "package": "fixtures/cnpq-anr-32-2026",
+  "notes": "Gabarito cobre o item 3 (elegibilidade), 4.1.1 (teto e só custeio), 6.7 (Diretório), 6.9.2–6.9.5 (arquivo e cooperação com a França) e o prazo. Fica de fora a aderência às áreas (1.1 diz que é avaliada no julgamento) e o que a ANR exige da equipe francesa.",
+  "profiles": [
+    {
+      "name": "ict-com-equipe-francesa",
+      "facts": "fixtures/cnpq-anr-32-2026/facts-elegivel.json",
+      "expected_overall": "SATISFIED"
+    },
+    {
+      "name": "aposentado-sem-comprovar-atividade",
+      "facts": "fixtures/cnpq-anr-32-2026/facts-incompleto.json",
+      "expected_overall": "UNKNOWN"
+    },
+    {
+      "name": "enviada-depois-do-prazo",
+      "facts": "fixtures/cnpq-anr-32-2026/facts-inelegivel.json",
+      "expected_overall": "UNSATISFIED"
+    }
+  ]
+}

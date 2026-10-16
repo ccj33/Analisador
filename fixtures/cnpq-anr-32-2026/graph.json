@@ -1,0 +1,404 @@
+{
+  "rules": [
+    {
+      "id": "ANR-LATTES",
+      "title": "Currículo Lattes atualizado até a submissão",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.lattes_updated"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-LAT",
+          "element_id": "chamada.elm_0019",
+          "quote": "ter seu currículo cadastrado na Plataforma Lattes, atualizado até a data limite para submissão da proposta"
+        }
+      ]
+    },
+    {
+      "id": "ANR-PHD",
+      "title": "Proponente com doutorado",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.has_phd"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-PHD",
+          "element_id": "chamada.elm_0020",
+          "quote": "possuir o título de doutor(a)"
+        }
+      ]
+    },
+    {
+      "id": "ANR-VINCULO",
+      "title": "Vínculo celetista/estatutário, ou aposentado em atividade com concordância",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "ANY",
+        "args": [
+          {
+            "op": "ANY",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "coordinator.bond_type"
+                },
+                "right": {
+                  "literal": "CLT"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "coordinator.bond_type"
+                },
+                "right": {
+                  "literal": "ESTATUTARIO"
+                }
+              }
+            ]
+          },
+          {
+            "op": "ALL",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "coordinator.is_retired"
+                },
+                "right": {
+                  "literal": true
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "coordinator.academic_activity"
+                },
+                "right": {
+                  "literal": true
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "coordinator.institution_agreement"
+                },
+                "right": {
+                  "literal": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-VIN",
+          "element_id": "chamada.elm_0021",
+          "quote": "possuir vínculo celetista ou estatutário com a instituição de execução do projeto"
+        },
+        {
+          "id": "EV-APOS",
+          "element_id": "chamada.elm_0021",
+          "quote": "caso seja aposentado, comprovar que mantém atividade acadêmico-científica e apresentar declaração da instituição de execução do projeto concordando com a sua execução"
+        }
+      ],
+      "relation_evidence": [
+        {
+          "id": "EV-VIN-OU",
+          "element_id": "chamada.elm_0021",
+          "quote": "ou, caso seja aposentado"
+        }
+      ]
+    },
+    {
+      "id": "ANR-ADIMPLENTE",
+      "title": "Declara não estar inadimplente com CNPq e APF",
+      "layer": "PRE_SUBMISSION",
+      "actor": "COORDINATOR",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "coordinator.declares_no_default"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-ADI",
+          "element_id": "chamada.elm_0023",
+          "quote": "não está inadimplente junto ao CNPq e à Administração Pública Federal"
+        }
+      ]
+    },
+    {
+      "id": "ANR-INST",
+      "title": "Instituição de execução no Diretório e de tipo admitido",
+      "layer": "PRE_SUBMISSION",
+      "actor": "INSTITUTION",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "institution.di_registered"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "ANY",
+            "args": [
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "ICT"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "EMPRESA_PRIVADA"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "EMPRESA_PUBLICA"
+                }
+              },
+              {
+                "op": "EQ",
+                "left": {
+                  "fact": "institution.type"
+                },
+                "right": {
+                  "literal": "OSC"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-INST",
+          "element_id": "chamada.elm_0031",
+          "quote": "A instituição de execução do projeto deverá estar cadastrada no Diretório de Instituições do CNPq, devendo ser uma Instituição Científica, Tecnológica e de Inovação (ICT) e/ou empresa privada constituída sob as leis brasileiras, com sede e foro no Brasil, bem como empresa pública ou organização da sociedade civil sem fins lucrativos"
+        }
+      ]
+    },
+    {
+      "id": "ANR-DI-TODAS",
+      "title": "Todas as instituições envolvidas no Diretório",
+      "layer": "PRE_SUBMISSION",
+      "actor": "INSTITUTION",
+      "expression": {
+        "op": "EQ",
+        "left": {
+          "fact": "project.all_institutions_di_registered"
+        },
+        "right": {
+          "literal": true
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-DI",
+          "element_id": "chamada.elm_0075",
+          "quote": "Todas as instituições de pesquisas envolvidas com o projeto, sejam nacionais ou internacionais, devem estar cadastradas previamente no Diretório de Instituições do CNPq"
+        }
+      ]
+    },
+    {
+      "id": "ANR-VALOR",
+      "title": "Até R$ 1,5 milhão, só custeio",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "project.requested_brl"
+            },
+            "right": {
+              "literal": 1500000
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "project.only_operating_costs"
+            },
+            "right": {
+              "literal": true
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-VAL",
+          "element_id": "chamada.elm_0036",
+          "quote": "Cada proposta poderá solicitar até R$ 1.500.000,00 (um milhão e quinhentos mil reais), exclusivamente em despesas de custeio"
+        }
+      ]
+    },
+    {
+      "id": "ANR-FRANCA",
+      "title": "Cooperação com grupo de pesquisa da França, com missões técnicas",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "project.has_french_team"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "project.plans_technical_missions"
+            },
+            "right": {
+              "literal": true
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-FR",
+          "element_id": "chamada.elm_0109",
+          "quote": "Os projetos de pesquisa devem prever, obrigatoriamente, a cooperação entre grupos de pesquisa do Brasil e da França"
+        },
+        {
+          "id": "EV-FR-MIS",
+          "element_id": "chamada.elm_0109",
+          "quote": "incluindo a realização de missões técnicas"
+        }
+      ]
+    },
+    {
+      "id": "ANR-ARQUIVO",
+      "title": "Arquivo anexo enviado, em PDF OCR de até 1 Mb",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROJECT",
+      "expression": {
+        "op": "ALL",
+        "args": [
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "proposal.has_attachment"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "EQ",
+            "left": {
+              "fact": "proposal.attachment_pdf_ocr"
+            },
+            "right": {
+              "literal": true
+            }
+          },
+          {
+            "op": "LTE",
+            "left": {
+              "fact": "proposal.attachment_mb"
+            },
+            "right": {
+              "literal": 1
+            }
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "id": "EV-ARQ",
+          "element_id": "chamada.elm_0106",
+          "quote": "O envio do arquivo é obrigatório e a ausência de qualquer um deles implicará no indeferimento da proposta"
+        },
+        {
+          "id": "EV-ARQ-OCR",
+          "element_id": "chamada.elm_0107",
+          "quote": "O arquivo deverá ser gerado em formato PDF OCR"
+        },
+        {
+          "id": "EV-ARQ-MB",
+          "element_id": "chamada.elm_0107",
+          "quote": "limitando-se a 1 Mb (um megabyte)"
+        }
+      ]
+    },
+    {
+      "id": "ANR-DEADLINE",
+      "title": "Envio até 23h59 de 31/03/2027",
+      "layer": "PRE_SUBMISSION",
+      "actor": "PROPONENT",
+      "expression": {
+        "op": "LTE",
+        "left": {
+          "fact": "submission.sent_at"
+        },
+        "right": {
+          "literal": "2027-03-31T23:59:00-03:00"
+        }
+      },
+      "evidence": [
+        {
+          "id": "EV-DL",
+          "element_id": "chamada.elm_0014",
+          "quote": "Data limite para submissão das propostas 31/03/2027"
+        },
+        {
+          "id": "EV-DL-H",
+          "element_id": "chamada.elm_0068",
+          "quote": "será até às 23h59 (vinte e três horas e cinquenta e nove minutos), horário de Brasília"
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass, replace
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any
 
 from tender_intel.ai.provider import AbstainProvider, DecisionProvider, Question
+from tender_intel.compile.coverage import clause_coverage, clauses_to_dict, coverage_counts
 from tender_intel.compile.discover import discover
 from tender_intel.compile.extract import compile_rules
 from tender_intel.domain.ast import render_human
@@ -49,6 +50,7 @@ class CompareResult:
     effects: list[dict]
     needs_ocr: list[dict]
     rule_source: str = "annotated"
+    clauses: list[dict] = field(default_factory=list)
 
 
 DISCLAIMER = (
@@ -133,6 +135,7 @@ def compare(
             )
         )
     draft = discover(package)
+    clauses = clause_coverage(package, rules, draft)
     pre = [item for item in evaluations if item.layer == DecisionLayer.PRE_SUBMISSION.value]
     overall = _overall([item.status for item in pre])
     coverage = {
@@ -141,6 +144,7 @@ def compare(
         "rules": len(rules),
         "rules_with_grounded_evidence": sum(1 for item in evaluations if item.evidence_ok),
         "extracted_values": len(extracted),
+        **coverage_counts(clauses),
     }
     return CompareResult(
         package_id=package.id,
@@ -156,6 +160,7 @@ def compare(
         effects=draft.to_dict()["effects"],
         needs_ocr=draft.to_dict()["needs_ocr"],
         rule_source=rule_source,
+        clauses=clauses_to_dict(clauses),
     )
 
 
@@ -173,6 +178,9 @@ def _triage(package: TenderPackage, provider: DecisionProvider) -> None:
 
 
 def _overall(statuses: list[str]) -> str:
+    # Nenhuma regra extraída não é "nada a cumprir": é não saber.
+    if not statuses:
+        return Status.UNKNOWN.value
     if any(status == Status.UNSATISFIED.value for status in statuses):
         return Status.UNSATISFIED.value
     if any(status == Status.CONFLICT.value for status in statuses):
@@ -197,4 +205,5 @@ def result_to_dict(result: CompareResult) -> dict[str, Any]:
         "effects": result.effects,
         "needs_ocr": result.needs_ocr,
         "rule_source": result.rule_source,
+        "clauses": result.clauses,
     }

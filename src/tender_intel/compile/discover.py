@@ -5,9 +5,16 @@ from dataclasses import asdict, dataclass
 
 from tender_intel.domain.documents import TenderPackage
 from tender_intel.domain.types import EventType
-from tender_intel.ingest.parsers import DATE_RE
 
-DEADLINE_HINT = re.compile(r"\bat[eé]\b|\bprazo\b|\benviad", re.IGNORECASE)
+MONTHS = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro")
+DATE = r"(?P<d>\d{1,2})(?:/(?P<m>\d{1,2})/|\s+de\s+(?P<month>" + "|".join(MONTHS) + r")\s+de\s+)(?P<y>\d{4})"
+# "Data limite para submissão das propostas 04/12/2026" (cronograma) ou "deverão ser enviadas até 30/11/2026".
+# [^\d] impede pular para uma data depois de outra ("Lançamento 14/10/2026 ... submissão 04/12/2026").
+SUBMISSION_DEADLINE = re.compile(
+    r"limite\s+para\s+(?:a\s+)?(?:submiss|envi)\w*[^\d]{0,60}?" + DATE
+    + r"|(?:submetid|submiss|enviad|envio)\w*[^\d]{0,30}?\bat[eé]\b[^\d]{0,30}?" + DATE.replace("?P<", "?P<b"),
+    re.IGNORECASE,
+)
 EXTERNAL_REF = re.compile(
     r"conforme\s+(?:o\s+|a\s+)?(?P<manual>Manual[^.,;\n]+)"
     r"|nos termos d[aeo]\s+(?P<norma>[^.,;\n]+)"
@@ -75,16 +82,14 @@ def discover(package: TenderPackage) -> CompileDraft:
 
 
 def _deadlines(package: TenderPackage) -> list[DeadlineHit]:
+    """Só data que o texto liga ao fim da submissão. Data de lançamento, de impugnação ou de
+    um desafio no anexo não é prazo."""
     hits: list[tuple] = []
     for document in package.documents:
         for element in document.elements:
-            if not DEADLINE_HINT.search(element.text):
-                continue
-            match = DATE_RE.search(element.text)
-            if not match:
-                continue
-            iso = f"{match.group(3)}-{int(match.group(2)):02d}-{int(match.group(1)):02d}"
-            hits.append((document, element.id, iso, element.text))
+            iso = submission_deadline(element.text)
+            if iso:
+                hits.append((document, element.id, iso, element.text))
     superseding = [item for item in hits if item[0].event in SUPERSEDING]
     effective_id = superseding[-1][1] if superseding else (hits[-1][1] if hits else None)
     drafted: list[DeadlineHit] = []
@@ -102,6 +107,18 @@ def _deadlines(package: TenderPackage) -> list[DeadlineHit]:
             )
         )
     return drafted
+
+
+def submission_deadline(text: str) -> str | None:
+    match = SUBMISSION_DEADLINE.search(text)
+    if match is None:
+        return None
+    parts = match.groupdict()
+    day = parts["d"] or parts["bd"]
+    year = parts["y"] or parts["by"]
+    month_name = (parts["month"] or parts["bmonth"] or "").lower()
+    month = int(parts["m"] or parts["bm"]) if (parts["m"] or parts["bm"]) else MONTHS.index(month_name) + 1
+    return f"{year}-{month:02d}-{int(day):02d}"
 
 
 def _dependencies(package: TenderPackage) -> list[ExternalDependency]:

@@ -5,6 +5,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 from tender_intel.domain.documents import DocumentElement
+from tender_intel.ingest.clauses import Line, drop_repeated, lines_of, segment
 
 EXTRACTOR = "pypdf"
 
@@ -13,7 +14,7 @@ def read_pdf(document_id: str, path: Path) -> tuple[str, tuple[DocumentElement, 
     """Lê a camada de texto. Página vazia vira needs_ocr, sem OCR automático."""
     reader = PdfReader(str(path))
     chunks: list[str] = []
-    elements: list[DocumentElement] = []
+    lines: list[Line] = []
     needs_ocr: list[int] = []
     cursor = 0
     for page_number, page in enumerate(reader.pages, start=1):
@@ -26,24 +27,10 @@ def read_pdf(document_id: str, path: Path) -> tuple[str, tuple[DocumentElement, 
         if not body:
             needs_ocr.append(page_number)
         else:
-            for index, line in enumerate(line for line in body.splitlines() if line.strip()):
-                start = cursor
-                end = start + len(line)
-                elements.append(
-                    DocumentElement(
-                        id=f"{document_id}.p{page_number:03d}.elm_{index:04d}",
-                        document_id=document_id,
-                        kind="paragraph",
-                        text=line.strip(),
-                        section_path=(f"p{page_number}",),
-                        start=start,
-                        end=end,
-                        page=page_number,
-                        extractor=EXTRACTOR,
-                    )
-                )
+            lines.extend(lines_of(body, page_number, cursor + len(marker) + 1))
         cursor += len(block)
-    return "\n".join(chunks), tuple(elements), tuple(needs_ocr)
+    # Cláusula quebrada entre linhas ou páginas volta a ser uma só.
+    return "\n".join(chunks), segment(document_id, drop_repeated(lines), EXTRACTOR), tuple(needs_ocr)
 
 
 def write_text_pdf(path: Path, pages: list[list[str]]) -> None:
